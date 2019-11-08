@@ -74,8 +74,12 @@ public class View {
                 }
                 if(l.isCharted()){
                     if (l.hasNPC()){
-                        s +=ANSI_UNDERLINE;
+                        s += ANSI_UNDERLINE;
                     }
+                    if (l.hasItem()) {
+                        s += ANSI_ITALIC;
+                    }
+
                     if(l.isDangerous()){
                         s += ANSI_RED;
                     } else if (l.isHelpful()){

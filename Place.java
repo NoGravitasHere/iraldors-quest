@@ -133,9 +133,9 @@ public class Place{
         }
         s += attribute + " " + biome + ANSI_RESET;
         s += "\n---------------------------------\n";
-        s += "[NPCs]: " + npcsToString();
-        s += "[Items]: " + itemsToString();
-        s += "\n---------------------------------";
+        s += "[NPCs]: " + npcsToString() + "\n";
+        s += "[Items]: " + itemsToString() + "\n";
+        s += "---------------------------------";
         return s;
     }
 
@@ -177,7 +177,7 @@ public class Place{
         return s;
     }
 
-    public addItems(Item ... items) {
+    public void addItems(Item ... items) {
         for (Item item : items) {
             this.items.add(item);
         }
@@ -195,12 +195,6 @@ public class Place{
         return s;
     }
 
-    public String toString(ArrayList<T> list) {
-        String s = "";
-        for (T object : list) {
-            s += object.toString() + ", ";
-        }
-    }
     //***********************
     // Getters & Setters
     //***********************

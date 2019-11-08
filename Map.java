@@ -17,6 +17,7 @@ public class Map{
     private int width;
     private int height;
     private int noNPCs;
+    private int noItems;
     private double dangerChance;
     private double helpChance;
     private double neutralChance;
@@ -39,6 +40,7 @@ public class Map{
         this.helpChance = 0.25;
         this.neutralChance = 0.25;
         this.noNPCs = 5;
+        this.noItems = 10;
 
         npcs = new ArrayList<>();
         map = new ArrayList<>();
@@ -50,6 +52,7 @@ public class Map{
         generateMap(width, height);
         generateStartingPlace();
         generateNPCs(noNPCs);
+        generateItems(noItems);
     }
 
     //***********************
@@ -86,7 +89,17 @@ public class Map{
             map.add(a);
         }
     }
-    
+
+    private void generateItems(int n) {
+        Random r = new Random();
+        for (int i = 0; i < n; i++) {
+            int x = r.nextInt(getWidth());
+            int y = r.nextInt(getHeight());
+            Place l = getLocation(x, y);
+            Item item = new Item();
+            l.addItems(item);
+        }
+    }
     /**
      * Generates a place 
      * @return the place
