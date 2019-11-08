@@ -134,6 +134,7 @@ public class Place{
         s += attribute + " " + biome + ANSI_RESET;
         s += "\n---------------------------------\n";
         s += "[NPCs]: " + npcsToString();
+        s += "[Items]: " + itemsToString();
         s += "\n---------------------------------";
         return s;
     }
@@ -192,6 +193,13 @@ public class Place{
             s += item.toString() + ", ";
         }
         return s;
+    }
+
+    public String toString(ArrayList<T> list) {
+        String s = "";
+        for (T object : list) {
+            s += object.toString() + ", ";
+        }
     }
     //***********************
     // Getters & Setters
