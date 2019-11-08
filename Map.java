@@ -13,8 +13,10 @@ public class Map{
     // Variables
     //***********************
     private ArrayList<ArrayList<Place>> map;
+    private ArrayList<NPC> npcs;
     private int width;
     private int height;
+    private int noNPCs;
     private double dangerChance;
     private double helpChance;
     private double neutralChance;
@@ -22,7 +24,6 @@ public class Map{
     private Place startingPlace;
     private int startX;
     private int startY;
-    private boolean charted;
     //***********************
     // Constructor
     //***********************
@@ -37,8 +38,9 @@ public class Map{
         this.dangerChance = 0.25;
         this.helpChance = 0.25;
         this.neutralChance = 0.25;
-        this.charted = false;
+        this.noNPCs = 5;
 
+        npcs = new ArrayList<>();
         map = new ArrayList<>();
 
         if(w < 1 || h < 1){
@@ -46,36 +48,50 @@ public class Map{
         }
 
         generateMap(width, height);
+        generateStartingPlace();
+        generateNPCs(noNPCs);
     }
 
     //***********************
-    // Main Methods
+    // Generation Methods
     //***********************
+    /**
+     * Generates npc in random locations on the map.
+     * @param n the number of npcs to generate
+     */
+    public void generateNPCs(int n) {
+        Random r = new Random();
+        for (int i = 0; i < n; i++) {
+            int x = r.nextInt(getWidth());
+            int y = r.nextInt(getHeight());
+            Place l = getLocation(x, y);
+            NPC npc = new NPC("npc" + i, x, y, l);
+            npcs.add(npc);
+            l.addNPCs(npc);
+        }
+    }
+
     /***
      * Generates the map
      * @param w width of the map
      * @param h height of the map
      */
     private void generateMap(int w, int h){
-        for (int i = 0; i < height; i++) {
+        for (int y = 0; y < height; y++) {
             ArrayList<Place> a = new ArrayList<>();
-            for (int j = 0; j < width; j++) {
-                a.add(generateLocation());
+            for (int x = 0; x < width; x++) {
+                Place p = generatePlace();
+                a.add(p);
             }
             map.add(a);
         }
-
-        startingPlace = new Place("start", "start", false, true, false, true);
-        startX = width/2;
-        startY = height/2;
-        map.get(startY).set(startX, startingPlace);
     }
-
+    
     /**
      * Generates a place 
      * @return the place
      */
-    private Place generateLocation(){
+    private Place generatePlace(){
         String[] biomes = {"Desert", "Mountains", "Medow", "Caverns", "Forest", "Swamp", "Wasteland", "Taiga", "Valley"};
         String[] gAttr = {"Lush", "Fungal", "Sacred"};
         String[] nAttr = {"Silent", "Empty", "Overgrown"};
@@ -97,8 +113,16 @@ public class Map{
         } else {
             return new Place(biome);
         }
+
+
     }
 
+    private void generateStartingPlace() {
+        startingPlace = new Place("start", "start", false, true, false, true);
+        startX = width/2;
+        startY = height/2;
+        map.get(startY).set(startX, startingPlace);
+    }
     //***********************
     // Other methods
     //***********************

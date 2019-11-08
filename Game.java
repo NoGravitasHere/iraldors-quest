@@ -34,7 +34,6 @@ public class Game {
         player = new Player(playerName, map.getStartX(), map.getStartY(), map.getStartingPlace());
         view = new View(map, player);
         npcs = new ArrayList<>();
-        generateNPCs(noNPCs);
         chartAdjacentPlaces(player.getxCoordinate(), player.getyCoordinate());
     }
 
@@ -57,25 +56,6 @@ public class Game {
             isFinished();
         }
         System.out.println("The End.");
-    }
-
-    //***********************
-    // Generation Methods
-    //***********************
-    /**
-     * Generates npc in random locations on the map.
-     * @param n the number of npcs to generate
-     */
-    public void generateNPCs(int n) {
-        Random r = new Random();
-        for (int i = 0; i < n; i++) {
-            int x = r.nextInt(map.getWidth());
-            int y = r.nextInt(map.getHeight());
-            Place l = map.getLocation(x, y);
-            NPC npc = new NPC("npc" + i, x, y, l);
-            npcs.add(npc);
-            l.addNPCs(npc);
-        }
     }
 
     //***********************
