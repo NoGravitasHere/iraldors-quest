@@ -29,7 +29,7 @@ public class Place{
     private boolean helpful;
     private boolean neutral;
 
-    private ArrayList<NPC> npcs = new ArrayList<>();
+    private ArrayList<NPC> npcs;
     private ArrayList<Item> items;
 
     //***********************
@@ -147,7 +147,7 @@ public class Place{
             this.npcs.add(npc);
         }
     }
-
+    
     /**
      * Removes a npc;
      * @param npc the npc to remove
@@ -176,6 +176,23 @@ public class Place{
         return s;
     }
 
+    public addItems(Item ... items) {
+        for (Item item : items) {
+            this.items.add(item);
+        }
+    }
+
+    public boolean hasItem() {
+        return !items.isEmpty();
+    }
+
+    public String itemsToString() {
+        String s = "";
+        for (Item item : items) {
+            s += item.toString() + ", ";
+        }
+        return s;
+    }
     //***********************
     // Getters & Setters
     //***********************
@@ -221,6 +238,13 @@ public class Place{
      */
     public boolean isNeutral() {
         return neutral;
+    }
+
+    /**
+     * @return the items
+     */
+    public ArrayList<Item> getItems() {
+        return items;
     }
 
     /**
