@@ -16,21 +16,28 @@ public class Item {
     public static final String ANSI_BRIGHT_BLACK = "\u001B[90m";
 
     private String name;
-    private RarityOption rarity;
-    private ItemOption itemOption;
+    private Rarities rarity;
+    private Items item;
     private int damage;
 
     //***********************
     // Constructors
     //***********************
-    public Item(ItemOption item, RarityOption rarity) {
-        this.itemOption = item;
+    public Item() {
+        this.item = Items.randomItem();
+        this.rarity = Rarities.randomRarity();
+        this.damage = 1;
+        this.name = toString();
+    }
+
+    public Item(Items item, Rarities rarity) {
+        this.item = item;
         this.rarity = rarity;
         this.damage = 1;
         this.name = toString();
     }
 
-    public Item(ItemOption item, RarityOption rarity, int damage) {
+    public Item(Items item, Rarities rarity, int damage) {
         this(item, rarity);
         this.damage = damage;
     }
@@ -39,51 +46,75 @@ public class Item {
     //***********************
     @Override
     public String toString() {
-        String s = "";
+        String c = "";
         switch(rarity) {
             case NORMAL:
-                s += "Normal";
+                c = ANSI_WHITE;
             break;
             case UNCOMON:
-                s += ANSI_GREEN + "Uncommon";
+                c = ANSI_GREEN;
             break;
             case RARE:
-                s += ANSI_CYAN + "Rare";
+                c = ANSI_CYAN;
             break;
             case EPIC:
-                s += ANSI_YELLOW + "Epic";
+                c = ANSI_YELLOW;
             break;
             case LEGENDARY:
-                s += ANSI_BRIGHT_YELLOW + "Legendary";
+                c = ANSI_BRIGHT_YELLOW;
             break;
             default:
             throw new IllegalStateException("Not a rarity");
         }
 
-        s += " ";
-
-        switch(itemOption) {
+        String i = "";
+        switch(item) {
             case AXE:
-                s += "Axe";
+                i = "Axe";
             break;
             case CHICKEN:
-                s += "Chicken";
+                i = "Chicken";
             break;
             case MAGIC_WAND:
-                s += "Magic Wand";
+                i = "Magic Wand";
             break;
             case SPOON:
-                s += "Spoon";
+                i = "Spoon";
             break;
             case SWORD:
-                s += "Sword";
+                i = "Sword";
             break;
             default:
             throw new IllegalStateException("Not an item");
         }
-        return name + "(" + name + ")" + ANSI_RESET;
+
+        String a = "";
+        switch(rarity) {
+            case NORMAL:
+                a = "Normal";
+            break;
+            case UNCOMON:
+                a = ANSI_GREEN + "Uncommon";
+            break;
+            case RARE:
+                a = ANSI_CYAN + "Rare";
+            break;
+            case EPIC:
+                a = ANSI_YELLOW + "Epic";
+            break;
+            case LEGENDARY:
+                a = ANSI_BRIGHT_YELLOW + "Legendary";
+            break;
+            default:
+            throw new IllegalStateException("Not a rarity");
+        }
+
+        return c + i + " (" + a + ") " + getStats() + ANSI_RESET;
     }
 
+    public String getStats() {
+        return "[" +"DMG: " + damage +  "]";
+    }
     //***********************
     // Getters & Setters
     //***********************
@@ -97,7 +128,7 @@ public class Item {
     /**
      * @return the rarity
      */
-    public RarityOption getRarity() {
+    public Rarities getRarity() {
         return rarity;
     }
 
