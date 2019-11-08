@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * This class is a model of a place on the map in the game
  * @author psoderlu
@@ -14,6 +16,7 @@ public class Player {
     private int hitpoints;
     private String name;
     private Place place;
+    private Inventory inventory;
 
     //***********************
     // Constructors
@@ -27,6 +30,7 @@ public class Player {
         name = "";
         place = null;
         hitpoints = 10;
+        inventory = new Inventory(); 
     }
 
     /***
@@ -89,7 +93,7 @@ public class Player {
         this.xCoordinate = x;
         this.yCoordinate = y;
     }
-    
+
     public int changeHitpoints(int amount) {
         hitpoints += amount;
         return hitpoints;
@@ -97,6 +101,12 @@ public class Player {
 
     public String getStats() {
         return "HP: " + hitpoints;
+    }
+
+    public void addItems(Item ... items) {
+        for (Item item : items) {
+            inventory.add(item);
+        }
     }
 
     //***********************
@@ -129,7 +139,7 @@ public class Player {
     public Place getPlace() {
         return place;
     }
-    
+
     /**
      * @return the hitpoints
      */
