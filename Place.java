@@ -25,14 +25,12 @@ public class Place{
     private String biome;
     private String attribute;
     private boolean charted;
-    private ArrayList<NPC> npcs = new ArrayList<>();
-    private ArrayList<Item> items;
-
-    private String name;
-    private String description;
     private boolean dangerous;
     private boolean helpful;
     private boolean neutral;
+
+    private ArrayList<NPC> npcs = new ArrayList<>();
+    private ArrayList<Item> items;
 
     //***********************
     // Constructors
@@ -47,6 +45,8 @@ public class Place{
         this.helpful = false;
         this.neutral = false;
         this.charted = false;
+        npcs = new ArrayList<>();
+        items = new ArrayList<>();
     }
     /**
      * Creates a new place
@@ -56,7 +56,7 @@ public class Place{
         this();
         this.biome = biome;
     }
-    
+
     /**
      * Creates a new place
      * @param biome the biome
@@ -142,8 +142,10 @@ public class Place{
      * Adds a npc to the place
      * @param npc the npc to add
      */
-    public void addNPC(NPC npc) {
-        npcs.add(npc);
+    public void addNPCs(NPC ... npcs) {
+        for (NPC npc : npcs) {
+            this.npcs.add(npc);
+        }
     }
 
     /**

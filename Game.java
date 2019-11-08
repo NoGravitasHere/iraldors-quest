@@ -74,7 +74,7 @@ public class Game {
             Place l = map.getLocation(x, y);
             NPC npc = new NPC("npc" + i, x, y, l);
             npcs.add(npc);
-            l.addNPC(npc);
+            l.addNPCs(npc);
         }
     }
 
@@ -196,12 +196,12 @@ public class Game {
                     npc.move("south");
                     Place p = map.getLocation(x, y + 1);
                     npc.setPlace(p);
-                    p.addNPC(npc);
+                    p.addNPCs(npc);
                 } else {
                     npc.move("north");
                     Place p = map.getLocation(x, y - 1);
                     npc.setPlace(p);
-                    p.addNPC(npc);
+                    p.addNPCs(npc);
                 }
             } else {
                 System.out.println("You draw your sword and lash out at the imagined threats");
