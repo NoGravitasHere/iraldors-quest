@@ -17,24 +17,21 @@ public class Item {
 
     private String name;
     private RarityOption rarity;
+    private ItemOption itemOption;
     private int damage;
 
     //***********************
     // Constructors
     //***********************
-    public Item(String name) {
-        this.name = name;
-        this.rarity = RarityOption.NORMAL;
+    public Item(ItemOption item, RarityOption rarity) {
+        this.itemOption = item;
+        this.rarity = rarity;
         this.damage = 1;
+        this.name = toString();
     }
 
-    public Item(String name, RarityOption rarity) {
-        this(name);
-        this.rarity = rarity;
-    }
-    
-    public Item(String name, RarityOption rarity, int damage) {
-        this(name, rarity);
+    public Item(ItemOption item, RarityOption rarity, int damage) {
+        this(item, rarity);
         this.damage = damage;
     }
     //***********************
@@ -62,7 +59,29 @@ public class Item {
             default:
             throw new IllegalStateException("Not a rarity");
         }
-        return s + " " + name;
+
+        s += " ";
+
+        switch(itemOption) {
+            case AXE:
+                s += "Axe";
+            break;
+            case CHICKEN:
+                s += "Chicken";
+            break;
+            case MAGIC_WAND:
+                s += "Magic Wand";
+            break;
+            case SPOON:
+                s += "Spoon";
+            break;
+            case SWORD:
+                s += "Sword";
+            break;
+            default:
+            throw new IllegalStateException("Not an item");
+        }
+        return name + "(" + name + ")" + ANSI_RESET;
     }
 
     //***********************
