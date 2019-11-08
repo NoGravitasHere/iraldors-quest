@@ -60,7 +60,7 @@ public class Item {
                 s += ANSI_BRIGHT_YELLOW + "Legendary";
             break;
             default:
-            throw new IlleagalStateException("Not a rarity");
+            throw new IllegalStateException("Not a rarity");
         }
         return s + " " + name;
     }
@@ -88,7 +88,7 @@ public class Item {
     public int getDamage() {
         return damage;
     }
-    
+
     /**
      * @param name the name to set
      */
