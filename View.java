@@ -12,6 +12,11 @@ public class View {
     // Variables
     //***********************
     public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_BOLD = "\u001B[1m";
+    public static final String ANSI_ITALIC = "\u001B[3m";
+    public static final String ANSI_UNDERLINE = "\u001B[4m";
+    public static final String ANSI_BLINK = "\u001B[5m";
+
     public static final String ANSI_BLACK = "\u001B[30m";
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_GREEN = "\u001B[32m";
@@ -65,22 +70,21 @@ public class View {
 
                 //Fixes colors based on the locations attributes / players / npcs
                 if(l == player.getPlace()){
-                    s += ANSI_BLUE + l.getShortName()  + ANSI_RESET + "\t";
-                } else if (l.hasNPC() && l.isCharted()){
-                    s += ANSI_PURPLE + l.getShortName() + ANSI_RESET + "\t";
-                }else {
-                    if(l.isCharted()){
-                        if(l.isDangerous()){
-                            s += ANSI_RED;
-                        } else if (l.isHelpful()){
-                            s += ANSI_GREEN;
-                        } else if (l.isNeutral()){
-                            s += ANSI_BRIGHT_BLACK;
-                        }
-                    }
-
-                    s += l.getShortName() + ANSI_RESET + "\t";
+                    s += ANSI_BLINK;
                 }
+                if(l.isCharted()){
+                    if (l.hasNPC()){
+                        s +=ANSI_UNDERLINE;
+                    }
+                    if(l.isDangerous()){
+                        s += ANSI_RED;
+                    } else if (l.isHelpful()){
+                        s += ANSI_GREEN;
+                    } else if (l.isNeutral()){
+                        s += ANSI_BRIGHT_BLACK;
+                    }
+                }
+                s += l.getShortName() + ANSI_RESET + "\t";
             }
             s += "|\n";
         }
