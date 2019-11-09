@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class Action {
 
@@ -18,15 +19,9 @@ public class Action {
     }
 
     public Optional<Nouns> getFirstNoun() {
-        Optional<Nouns> o = new Optional<Nouns>();
-        if(nouns.isEmpty()) {
-            return o;
-        } else {
-            o = nouns.get(0);
-            return o;
-        }
+        return Optional.ofNullable(nouns.get(0));
     }
-    
+
     /**
      * @return the nouns
      */

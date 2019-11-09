@@ -63,24 +63,21 @@ public class Player {
      * Moves the player based on the input direction
      * @param direction the direction to move in
      */
-    public void move(String direction){
+    public void move(Nouns direction){
         switch(direction) {
-            case "north":
-            case "w":
+            case NORTH:
             yCoordinate--;
             break;
-            case "south":
-            case "s":
+            case SOUTH:
             yCoordinate++;
             break;
-            case "east":
-            case "d":
+            case EAST:
             xCoordinate++;
             break;
-            case "west":
-            case "a":
+            case WEST:
             xCoordinate--;
             break;
+            default:
         }
     }
 

@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Optional;
 import java.io.File;
 
 /**
@@ -18,8 +19,7 @@ public class Game {
     private View view;
     private Player player;
     private ArrayList<NPC> npcs;
-    private ArrayList<String> verbs;
-    private ArrayList<String> nouns;
+    private Parser parser;
     private boolean finished = false;
 
     //***********************
@@ -29,11 +29,12 @@ public class Game {
      * Create the game and initialise its internal map.
      */
     public Game(int w, int h, String playerName, int noNPCs) {
-        getCommands();
         map = new Map(w, h);
         player = new Player(playerName, map.getStartX(), map.getStartY(), map.getStartingPlace());
         view = new View(map, player);
         npcs = new ArrayList<>();
+        parser = new Parser();
+        inputStream = new Scanner(System.in);
         chartAdjacentPlaces(player.getxCoordinate(), player.getyCoordinate());
     }
 
@@ -68,41 +69,31 @@ public class Game {
         Scanner sc = new Scanner(System.in);
         String input = sc.nextLine();
 
-        switch(input) {
-            case "help":
-            printHelp();
-            return;
+        Action action = parser.parse(input);
+        ArrayList<Nouns> nouns = action.getNouns();
+        Optional<Nouns> noun = action.getFirstNoun();
 
-            case "quit":
-            finished = true;
-            return;
-        }
-
-        if(!input.contains(" ")) {
-            System.out.println("\"" + input + "\" is not a valid input");
-            return;
-        }
-        String verb = input.substring(0, input.indexOf(" "));
-        String noun = input.substring(input.indexOf(" ") + 1, input.length());
-
-        switch(verb) {
-            case "move":
-            case "go":
-            case "m":
-            moveInput(noun);
+        switch(action.getVerb()) {
+            case MOVE:
+            noun.ifPresent(this::moveInput);
             break;
-
-            case "talk":
-            case "talkTo":
-            talkInput(noun);
+            case TALK:
+            noun.ifPresent(this::talkInput);
             break;
-
-            case "attack":
-            attackInput(noun);
+            case ATTACK:
+            noun.ifPresent(this::attackInput);
             break;
-
+            case TAKE:
+            break;
+            case HELP:
+            break;
+            case QUIT:
+            break;
+            case UNKNOWN:
+            System.out.println("unkown verb");
+            break;
             default:
-            System.out.println("\"" + verb + "\" is an unkown verb");
+            throw new IllegalStateException("Illegal verb thingamajing");
         }
     }
 
@@ -110,16 +101,12 @@ public class Game {
      * Moves the player in a direction
      * @param noun the direction to move in.
      */
-    private void moveInput(String noun) {
+    private void moveInput(Nouns noun) {
         switch(noun) {
-            case "w":
-            case "a":
-            case "s":
-            case "d":
-            case "north":
-            case "south":
-            case "east":
-            case "west":
+            case NORTH:
+            case SOUTH:
+            case EAST:
+            case WEST:
                 if(canMove(noun, player.getxCoordinate(), player.getyCoordinate())) {
                     player.move(noun);
                     player.setPlace(map.getLocation(player.getxCoordinate(), player.getyCoordinate()));
@@ -138,7 +125,7 @@ public class Game {
                 }
             break;
             default:
-                System.out.println("Unkown noun");
+                System.out.println("Unkown direction");
         }
     }
 
@@ -146,7 +133,7 @@ public class Game {
      * Talks to a npc
      * @param noun the name of the npc
      */
-    private void talkInput(String noun) {
+    private void talkInput(Nouns noun) {
         npcs.stream().filter(npc -> npc.getName().equals(noun)).
         forEach(npc -> {
             if(npc.getPlace() == player.getPlace()){
@@ -162,7 +149,7 @@ public class Game {
      * Allows the player to attack an npc
      * @param noun the npc to attack
      */
-    private void attackInput(String noun) {
+    private void attackInput(Nouns noun) {
         npcs.stream().filter(npc -> npc.getName().equals(noun)).
         forEach(npc -> {
             if(npc.getPlace() == player.getPlace()){
@@ -172,13 +159,13 @@ public class Game {
                 int y = npc.getyCoordinate();
 
                 npc.getPlace().removeNPC(npc);
-                if(canMove("south", x, y)) {
-                    npc.move("south");
+                if(canMove(Nouns.SOUTH, x, y)) {
+                    npc.move(Nouns.SOUTH);
                     Place p = map.getLocation(x, y + 1);
                     npc.setPlace(p);
                     p.addNPCs(npc);
                 } else {
-                    npc.move("north");
+                    npc.move(Nouns.NORTH);
                     Place p = map.getLocation(x, y - 1);
                     npc.setPlace(p);
                     p.addNPCs(npc);
@@ -192,28 +179,6 @@ public class Game {
     //***********************
     // Other
     //***********************
-    /**
-         * Reads the possibe commands from two text files
-         */
-    private void getCommands(){
-        verbs = new ArrayList<>();
-        nouns = new ArrayList<>();
-        Scanner s1 = null;
-        Scanner s2 = null;
-        try {
-            s1 = new Scanner(new File("nouns.txt"));
-            s2 = new Scanner(new File("verbs.txt"));
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        while(s1.hasNextLine()){
-            nouns.add(s1.nextLine());
-        }
-        while(s2.hasNextLine()){
-            verbs.add(s2.nextLine());
-        }
-    }
-
     private void isFinished() {
         if(player.getHitpoints() <= 0) {
             finished = true;
@@ -232,23 +197,6 @@ public class Game {
         System.out.println("Type 'help' if you need help.");
         System.out.println();
         System.out.println();
-    }
-
-    /**
-     * Print out some help information.
-     * Here we print some stupid, cryptic message and a list of the 
-     * command words.
-     */
-    private void printHelp() {
-        System.out.println("Availeble commands:");
-        System.out.println("Verbs:");
-        for (String string : verbs) {
-            System.out.println(string);
-        }
-        System.out.println("\nNouns:");
-        for (String string : nouns) {
-            System.out.println(string);
-        }
     }
 
     /**
@@ -281,29 +229,28 @@ public class Game {
      * @param y the y coordinate to move from
      * @return whether it's possible or not to move.
      */
-    private boolean canMove(String direction, int x, int y) {
+    private boolean canMove(Nouns direction, int x, int y) {
         boolean b = true;
         switch(direction){
-            case "north":
-            case "w":
+            case NORTH:
             if(y  <= 0) {
                 b = false;
             }
             break;
-            case "south":
-            case "s":
+
+            case SOUTH:
             if(y + 1 >= map.getHeight()) {
                 b = false;
             }
             break;
-            case "east":
-            case "d":
+
+            case EAST:
             if(x + 1 >= map.getWidth()) {
                 b = false;
             }
             break;
-            case "west":
-            case "a":
+
+            case WEST:
             if(x <= 0) {
                 b = false;
             }
