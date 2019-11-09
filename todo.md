@@ -5,3 +5,4 @@
  - fix display
  - improve text output
  - add javadoc
+ - implement take
