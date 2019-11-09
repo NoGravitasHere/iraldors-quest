@@ -34,7 +34,6 @@ public class Game {
         view = new View(map, player);
         npcs = new ArrayList<>();
         parser = new Parser();
-        inputStream = new Scanner(System.in);
         chartAdjacentPlaces(player.getxCoordinate(), player.getyCoordinate());
     }
 
