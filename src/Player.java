@@ -2,15 +2,16 @@ import java.util.ArrayList;
 
 /**
  * This class is a model of a place on the map in the game
+ *
  * @author psoderlu
  * @version 42
  */
 
 public class Player {
 
-    //***********************
+    // ***********************
     // Variables
-    //***********************
+    // ***********************
     private int xCoordinate;
     private int yCoordinate;
     private int hitpoints;
@@ -18,9 +19,9 @@ public class Player {
     private Place place;
     private Inventory inventory;
 
-    //***********************
+    // ***********************
     // Constructors
-    //***********************
+    // ***********************
     /**
      * Creates a new player
      */
@@ -30,11 +31,12 @@ public class Player {
         name = "";
         place = null;
         hitpoints = 10;
-        inventory = new Inventory(); 
+        inventory = new Inventory();
     }
 
     /***
-     * Creates a new player 
+     * Creates a new player
+     *
      * @param name the name
      */
     public Player(String name) {
@@ -42,13 +44,14 @@ public class Player {
         this.name = name;
     }
 
-     /**
-      * Creates a new player
-      * @param name the name
-      * @param x the x position
-      * @param y the y position
-      * @param place the place
-      */
+    /**
+     * Creates a new player
+     *
+     * @param name  the name
+     * @param x     the x position
+     * @param y     the y position
+     * @param place the place
+     */
     public Player(String name, int x, int y, Place place) {
         this(name);
         this.xCoordinate = x;
@@ -56,37 +59,39 @@ public class Player {
         this.place = place;
     }
 
-    //***********************
+    // ***********************
     // Main methods
-    //***********************
+    // ***********************
     /**
      * Moves the player based on the input direction
+     *
      * @param direction the direction to move in
      */
-    public void move(Nouns direction){
-        switch(direction) {
-            case NORTH:
+    public void move(Nouns direction) {
+        switch (direction) {
+        case NORTH:
             yCoordinate--;
             break;
-            case SOUTH:
+        case SOUTH:
             yCoordinate++;
             break;
-            case EAST:
+        case EAST:
             xCoordinate++;
             break;
-            case WEST:
+        case WEST:
             xCoordinate--;
             break;
-            default:
+        default:
         }
     }
 
     /**
      * Moves the player
+     *
      * @param x the x to move to
      * @param y the y to move to
      */
-    public void move(int x, int y){
+    public void move(int x, int y) {
         this.xCoordinate = x;
         this.yCoordinate = y;
     }
@@ -100,15 +105,15 @@ public class Player {
         return "HP: " + hitpoints;
     }
 
-    public void addItems(Item ... items) {
+    public void addItems(Item... items) {
         for (Item item : items) {
             inventory.add(item);
         }
     }
 
-    //***********************
+    // ***********************
     // Getters & Setters
-    //***********************
+    // ***********************
     /**
      * @return the name
      */
@@ -142,6 +147,13 @@ public class Player {
      */
     public int getHitpoints() {
         return hitpoints;
+    }
+
+    /**
+     * @return the inventory
+     */
+    public Inventory getInventory() {
+        return inventory;
     }
 
     /**

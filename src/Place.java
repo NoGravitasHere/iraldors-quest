@@ -2,15 +2,16 @@ import java.util.ArrayList;
 
 /**
  * This class is a model of a place on the map in the game
+ *
  * @author psoderlu
  * @version 42
  */
 
-public class Place{
+public class Place {
 
-    //***********************
+    // ***********************
     // Variables
-    //***********************
+    // ***********************
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
     public static final String ANSI_RED = "\u001B[31m";
@@ -32,13 +33,13 @@ public class Place{
     private ArrayList<NPC> npcs;
     private ArrayList<Item> items;
 
-    //***********************
+    // ***********************
     // Constructors
-    //***********************
+    // ***********************
     /**
      * Creates a new place
      */
-    public Place(){
+    public Place() {
         this.biome = "Start";
         this.attribute = "    ";
         this.dangerous = false;
@@ -48,28 +49,32 @@ public class Place{
         npcs = new ArrayList<>();
         items = new ArrayList<>();
     }
+
     /**
      * Creates a new place
+     *
      * @param biome the biome
      */
-    public Place(String biome){
+    public Place(String biome) {
         this();
         this.biome = biome;
     }
 
     /**
      * Creates a new place
-     * @param biome the biome
+     *
+     * @param biome     the biome
      * @param attribute the attribute of the biome
      */
-    public Place(String biome, String attribute){
+    public Place(String biome, String attribute) {
         this(biome);
         this.attribute = attribute;
     }
 
     /**
      * Creates a new place
-     * @param biome the biome
+     *
+     * @param biome     the biome
      * @param attribute the attribute of the biome
      * @param dangerous whether the attribute is dangerous
      */
@@ -80,10 +85,11 @@ public class Place{
 
     /**
      * Creates a new place
-     * @param biome the biome
+     *
+     * @param biome     the biome
      * @param attribute the attribute of the biome
      * @param dangerous whether the attribute is dangerous
-     * @param helpful whetether the attribute is helpful
+     * @param helpful   whetether the attribute is helpful
      */
     public Place(String biome, String attribute, boolean dangerous, boolean helpful) {
         this(biome, attribute, dangerous);
@@ -92,11 +98,12 @@ public class Place{
 
     /**
      * Creates a new place
-     * @param biome the biome
+     *
+     * @param biome     the biome
      * @param attribute the attribute of the biome
      * @param dangerous whether the attribute is dangerous
-     * @param helpful whetether the attribute is helpful
-     * @param neutral whether the attribute is neutral
+     * @param helpful   whetether the attribute is helpful
+     * @param neutral   whether the attribute is neutral
      */
     public Place(String biome, String attribute, boolean dangerous, boolean helpful, boolean neutral) {
         this(biome, attribute, dangerous, helpful);
@@ -105,30 +112,31 @@ public class Place{
 
     /**
      * Creates a new place
-     * @param biome the biome
+     *
+     * @param biome     the biome
      * @param attribute the attribute of the biome
      * @param dangerous whether the attribute is dangerous
-     * @param helpful whetether the attribute is helpful
-     * @param neutral whether the attribute is neutral
-     * @param charted determins if the place is visible to the player
+     * @param helpful   whetether the attribute is helpful
+     * @param neutral   whether the attribute is neutral
+     * @param charted   determins if the place is visible to the player
      */
     public Place(String biome, String attribute, boolean dangerous, boolean helpful, boolean neutral, boolean charted) {
         this(biome, attribute, dangerous, helpful, neutral);
         this.charted = charted;
     }
 
-    //***********************
+    // ***********************
     // Methods
-    //***********************
+    // ***********************
     @Override
     public String toString() {
         String s = "";
 
-        if(isDangerous()) {
+        if (isDangerous()) {
             s += ANSI_RED;
-        } else if(isHelpful()) {
-            s+= ANSI_GREEN;
-        } else if(isNeutral()) {
+        } else if (isHelpful()) {
+            s += ANSI_GREEN;
+        } else if (isNeutral()) {
             s += ANSI_BRIGHT_BLACK;
         }
         s += attribute + " " + biome + ANSI_RESET;
@@ -141,16 +149,18 @@ public class Place{
 
     /**
      * Adds a npc to the place
+     *
      * @param npc the npc to add
      */
-    public void addNPCs(NPC ... npcs) {
+    public void addNPCs(NPC... npcs) {
         for (NPC npc : npcs) {
             this.npcs.add(npc);
         }
     }
-    
+
     /**
      * Removes a npc;
+     *
      * @param npc the npc to remove
      */
     public void removeNPC(NPC npc) {
@@ -159,6 +169,7 @@ public class Place{
 
     /**
      * Wether the place has an npc
+     *
      * @return true if it has else false.
      */
     public boolean hasNPC() {
@@ -167,9 +178,10 @@ public class Place{
 
     /**
      * Returns a string of the npcs names
+     *
      * @return a string of npc names
      */
-    private String npcsToString() {
+    public String npcsToString() {
         String s = "";
         for (NPC npc : npcs) {
             s += npc.toString() + ", ";
@@ -177,7 +189,7 @@ public class Place{
         return s;
     }
 
-    public void addItems(Item ... items) {
+    public void addItems(Item... items) {
         for (Item item : items) {
             this.items.add(item);
         }
@@ -195,22 +207,28 @@ public class Place{
         return s;
     }
 
-    //***********************
+    public String getName() {
+        return "The " + attribute + " " + biome;
+    }
+
+    // ***********************
     // Getters & Setters
-    //***********************
+    // ***********************
     /**
-     * Returns a nine characther string of the four first letters in the attribute and biome.
+     * Returns a nine characther string of the four first letters in the attribute
+     * and biome.
+     *
      * @return the string described above. If the place is uncharted "???? ????".
      */
-    public String getShortName(){
-        if(!isCharted()){
+    public String getShortName() {
+        if (!isCharted()) {
             return "???? ????";
         }
 
         String s = "";
         s += attribute.substring(0, 4);
         s += " ";
-        s += biome.substring(0,4);
+        s += biome.substring(0, 4);
         return s;
     }
 
