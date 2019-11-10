@@ -6,5 +6,6 @@ public enum Nouns {
     WEST,
     EAST,
     ITEM,
-    ITEMS;
+    ITEMS,
+    NPC;
 }

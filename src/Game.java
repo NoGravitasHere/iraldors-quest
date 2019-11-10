@@ -33,7 +33,7 @@ public class Game {
     public Game(int w, int h, String playerName, int noNPCs) {
         map = new Map(w, h);
         player = new Player(playerName, map.getStartX(), map.getStartY(), map.getStartingPlace());
-        npcs = new ArrayList<>();
+        npcs = map.getNpcs();
         parser = new Parser();
         printList = new ArrayList<>();
         view = new View(map, player, npcs);
@@ -50,12 +50,12 @@ public class Game {
         printWelcome();
 
         while (!finished) {
-            view.print();
             printList.add("What would you like to do?");
             print();
             processInput();
             isFinished();
         }
+        print();
         System.out.println("The End.");
     }
 
@@ -136,14 +136,17 @@ public class Game {
      * @param noun the name of the npc
      */
     private void talkInput(Nouns noun) {
-        npcs.stream().filter(npc -> npc.getName().equals(noun)).forEach(npc -> {
-            if (npc.getPlace() == player.getPlace()) {
-                printList.add("You approach the person which turns around and says: ");
+        ArrayList<String> a = parser.getNouns(parser.getInput());
+        ArrayList<NPC> npcsInLocation = player.getPlace().getNpcs();
+        System.out.println(npcsInLocation);
+        System.out.println(a);
+
+        for (NPC npc : npcsInLocation) {
+            if(a.contains(npc.getName()) || a.contains("npc")) {
+                printList.add("You approach " + npc.getName() + " who turns around and says: ");
                 printList.add("\"" + npc.getDialogue() + "\"");
-            } else {
-                printList.add("You talk to yourself feeling a bit silly");
             }
-        });
+        }
     }
 
     /**
@@ -189,6 +192,7 @@ public class Game {
     }
 
     private void print() {
+        view.print();
         for (String s : printList) {
             System.out.println(s);
         }

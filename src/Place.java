@@ -233,6 +233,13 @@ public class Place {
     }
 
     /**
+     * @return the npcs
+     */
+    public ArrayList<NPC> getNpcs() {
+        return npcs;
+    }
+
+    /**
      * @return the charted
      */
     public boolean isCharted() {

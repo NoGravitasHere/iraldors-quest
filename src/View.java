@@ -59,7 +59,7 @@ public class View {
     // ***********************
     public void print() {
         playerPlace = player.getPlace();
-        System.out.println(ANSI_CLEAR);
+        System.out.print(ANSI_CLEAR);
         System.out.println(HEAVY_LINE);
         System.out.println("[Map of the World]");
         System.out.println(MEDIUM_LINE);

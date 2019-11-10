@@ -14,7 +14,6 @@ import java.io.File;
 public class NPC extends Player {
 
     private String dialogue;
-    public ArrayList<String> possibleNames;
 
     /**
      * Creates a new npc with dialogue from a text file
@@ -28,10 +27,8 @@ public class NPC extends Player {
         super(name, x, y, place);
 
         Scanner sc = null;
-        Scanner s = null;
         try {
             sc = new Scanner(new File("npcDialogue.txt"));
-            s = new Scanner(new File("npcNames.txt"));
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -41,14 +38,31 @@ public class NPC extends Player {
             d.add(sc.nextLine());
         }
 
+
+        Random r = new Random();
+        dialogue = d.get(r.nextInt(d.size()));
+    }
+
+    public static ArrayList<String> getPossibleNames() {
+        Scanner s = null;
+        ArrayList<String> possibleNames = new ArrayList<>();
+        try {
+            s = new Scanner(new File("npcNames.txt"));
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
         possibleNames = new ArrayList<>();
         while (s.hasNextLine()) {
             possibleNames.add(s.nextLine());
         }
 
+        return possibleNames;
+    }
+
+    public static String getRandomName() {
         Random r = new Random();
-        dialogue = d.get(r.nextInt(d.size()));
-        name = possibleNames.get(r.nextInt(possibleNames.size()));
+        return getPossibleNames().get(r.nextInt(getPossibleNames().size()));
     }
 
     /**

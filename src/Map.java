@@ -68,7 +68,7 @@ public class Map{
             int x = r.nextInt(getWidth());
             int y = r.nextInt(getHeight());
             Place l = getLocation(x, y);
-            NPC npc = new NPC("npc" + i, x, y, l);
+            NPC npc = new NPC(NPC.getRandomName(), x, y, l);
             npcs.add(npc);
             l.addNPCs(npc);
         }
@@ -101,7 +101,7 @@ public class Map{
         }
     }
     /**
-     * Generates a place 
+     * Generates a place
      * @return the place
      */
     private Place generatePlace(){
@@ -113,7 +113,7 @@ public class Map{
 
         String biome = biomes[r.nextInt(biomes.length)];
         String attr = "";
-        
+
         if(Math.random() < helpChance){
             attr = gAttr[r.nextInt(gAttr.length)];
             return new Place(biome, attr, false, true);
@@ -214,5 +214,12 @@ public class Map{
      */
     public Place getStartingPlace() {
         return startingPlace;
+    }
+
+    /**
+     * @return the npcs
+     */
+    public ArrayList<NPC> getNpcs() {
+        return npcs;
     }
 }

@@ -5,6 +5,7 @@ import java.util.Optional;
 public class Parser {
 
     private ArrayList<String> redundantWords;
+    private String input;
 
     public Parser() {
         redundantWords = new ArrayList<>();
@@ -14,14 +15,16 @@ public class Parser {
     }
 
     public Action parse(String input) {
-        input = input.toLowerCase();
-        input = removeRedundantWords(input);
+        this.input = input;
+        String in = input;
+        in = input.toLowerCase();
+        in = removeRedundantWords(input);
 
-        String v = getVerb(input);
+        String v = getVerb(in);
         Verbs verb = parseVerb(v);
 
         ArrayList<Nouns> nouns = new ArrayList<>();
-        var ns = getNouns(input);
+        var ns = getNouns(in);
         for (String string : ns) {
             nouns.add(parseNoun(string));
         }
@@ -29,16 +32,16 @@ public class Parser {
     }
 
     private String getVerb(String input) {
-        if(input.indexOf(" ") == -1) {
+        if (input.indexOf(" ") == -1) {
             return input;
         } else {
             return input.substring(0, input.indexOf(" "));
         }
     }
 
-    private ArrayList<String> getNouns(String input) {
+    public ArrayList<String> getNouns(String input) {
         var list = new ArrayList<String>();
-        if(input.indexOf(" ") == -1) {
+        if (input.indexOf(" ") == -1) {
             return list;
         }
         input = input.substring(getVerb(input).length() + 1, input.length());
@@ -47,32 +50,32 @@ public class Parser {
     }
 
     private Verbs parseVerb(String verb) {
-        switch(verb.toLowerCase()) {
-            case "help":
+        switch (verb.toLowerCase()) {
+        case "help":
             return Verbs.HELP;
 
-            case "quit":
+        case "quit":
             return Verbs.QUIT;
 
-            case "move":
-            case "go":
-            case "m":
-            case "mv":
+        case "move":
+        case "go":
+        case "m":
+        case "mv":
             return Verbs.MOVE;
 
-            case "talk":
-            case "t":
+        case "talk":
+        case "t":
             return Verbs.TALK;
 
-            case "attack":
-            case "atk":
-            case "a":
+        case "attack":
+        case "atk":
+        case "a":
             return Verbs.ATTACK;
 
-            case "take":
+        case "take":
             return Verbs.TAKE;
 
-            default:
+        default:
             return Verbs.UNKNOWN;
         }
     }
@@ -101,19 +104,27 @@ public class Parser {
             default:
             if(noun.matches("(item|i)(\\d+)?")) {
                 return Nouns.ITEM;
+            } else if(NPC.getPossibleNames().contains(noun) || noun.equals("npc")) {
+                return Nouns.NPC;
             }
-
             return Nouns.UNKOWN;
         }
     }
 
     private String removeRedundantWords(String text) {
         StringBuilder sb = new StringBuilder(text);
-        for (String word: redundantWords) {
-            while(0 < sb.indexOf(word)) {
+        for (String word : redundantWords) {
+            while (0 < sb.indexOf(word)) {
                 sb.delete(sb.indexOf(word), sb.indexOf(word) + word.length());
             }
         }
         return sb.toString();
+    }
+
+    /**
+     * @return the input
+     */
+    public String getInput() {
+        return input;
     }
 }
