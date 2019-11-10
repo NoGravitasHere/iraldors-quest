@@ -1,2 +1,7 @@
 *.class
 Tester.java
+target/
+pom.xml
+.settings/
+.project
+.classpath
