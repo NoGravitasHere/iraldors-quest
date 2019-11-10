@@ -68,6 +68,7 @@ public class Game {
     private void processInput() {
         Scanner sc = new Scanner(System.in);
         String input = sc.nextLine();
+        sc.close();
 
         Action action = parser.parse(input);
         ArrayList<Nouns> nouns = action.getNouns();

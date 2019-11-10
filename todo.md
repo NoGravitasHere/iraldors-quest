@@ -1,8 +1,0 @@
- - fix attackInput
- - fix talkInput
- - add help
- - add quit
- - fix display
- - improve text output
- - add javadoc
- - implement take
