@@ -1,3 +1,5 @@
+package parser;
+
 public enum Nouns {
     UNKOWN,
     NONE,

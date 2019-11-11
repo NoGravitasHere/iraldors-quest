@@ -1,3 +1,5 @@
+package parser;
+
 public enum Verbs {
     UNKNOWN,
     MOVE,

@@ -1,4 +1,10 @@
+package main;
+
 import java.util.ArrayList;
+import characters.*;
+import items.*;
+import map.*;
+import parser.*;
 
 /**
  * This class creates a vieweble elemnt and prints it to the terminal

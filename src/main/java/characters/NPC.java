@@ -1,7 +1,10 @@
+package characters;
+
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 import java.io.File;
+import map.*;
 
 /**
  * This class is an extension of the player in the game which allows for npcs to

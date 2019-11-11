@@ -1,5 +1,9 @@
-import java.util.ArrayList;
+package characters;
 
+import java.util.ArrayList;
+import map.*;
+import items.*;
+import parser.*;
 /**
  * This class is a model of a place on the map in the game
  *

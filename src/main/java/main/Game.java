@@ -1,8 +1,14 @@
+package main;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Scanner;
+import characters.*;
+import items.*;
+import map.*;
+import parser.*;
 
 /**
  * This class is the main class of the game
