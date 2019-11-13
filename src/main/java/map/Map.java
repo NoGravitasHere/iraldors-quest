@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Random;
 import characters.*;
 import items.*;
-import parser.*;
 
 /**
  * This class is the map in the game

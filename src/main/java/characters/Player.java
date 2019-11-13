@@ -1,6 +1,5 @@
 package characters;
 
-import java.util.ArrayList;
 import map.*;
 import items.*;
 import parser.*;

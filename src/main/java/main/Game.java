@@ -1,12 +1,9 @@
 package main;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.Random;
 import java.util.Scanner;
 import characters.*;
-import items.*;
 import map.*;
 import parser.*;
 
@@ -41,8 +38,8 @@ public class Game {
         player = new Player(playerName, map.getStartX(), map.getStartY(), map.getStartingPlace());
         npcs = map.getNpcs();
         parser = new Parser();
-        printList = new ArrayList<>();
         view = new View(map, player, npcs);
+        printList = new ArrayList<>();
         chartAdjacentPlaces(player.getxCoordinate(), player.getyCoordinate());
     }
 
@@ -74,7 +71,6 @@ public class Game {
     private void processInput() {
         Scanner sc = new Scanner(System.in);
         String input = sc.nextLine();
-        sc.close();
 
         Action action = parser.parse(input);
         ArrayList<Nouns> nouns = action.getNouns();
@@ -271,6 +267,8 @@ public class Game {
                 b = false;
             }
             break;
+        default:
+            printList.add("unkown direction");
         }
         return b;
     }

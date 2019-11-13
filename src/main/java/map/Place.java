@@ -3,6 +3,7 @@ package map;
 import java.util.ArrayList;
 import characters.*;
 import items.*;
+import javax.swing.*;
 
 /**
  * This class is a model of a place on the map in the game
@@ -11,7 +12,7 @@ import items.*;
  * @version 42
  */
 
-public class Place {
+public class Place extends JPanel {
 
     // ***********************
     // Variables
@@ -276,6 +277,20 @@ public class Place {
      */
     public ArrayList<Item> getItems() {
         return items;
+    }
+
+    /**
+     * @return the biome
+     */
+    public String getBiome() {
+        return biome;
+    }
+
+    /**
+     * @return the attribute
+     */
+    public String getAttribute() {
+        return attribute;
     }
 
     /**
