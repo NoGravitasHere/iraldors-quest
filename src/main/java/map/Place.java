@@ -45,6 +45,9 @@ public class Place extends JPanel {
         npcs = new ArrayList<>();
         items = new ArrayList<>();
         label = new JLabel();
+        label.setHorizontalAlignment(JLabel.CENTER);
+        label.setVerticalAlignment(JLabel.CENTER);
+        add(label);
     }
 
     /**

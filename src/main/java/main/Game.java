@@ -2,7 +2,6 @@ package main;
 
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.Scanner;
 import characters.*;
 import map.*;
 import parser.*;
@@ -38,7 +37,7 @@ public class Game {
         player = new Player(playerName, map.getStartX(), map.getStartY(), map.getStartingPlace());
         npcs = map.getNpcs();
         parser = new Parser();
-        view = new View(map, player, npcs);
+        view = new View(map, player, npcs, this);
         printList = new ArrayList<>();
         chartAdjacentPlaces(player.getxCoordinate(), player.getyCoordinate());
     }
@@ -46,21 +45,6 @@ public class Game {
     // ***********************
     // Main Methods
     // ***********************
-    /**
-     * Main play routine. Loops until end of play.
-     */
-    public void play() {
-        printWelcome();
-
-        while (!finished) {
-            printList.add("What would you like to do?");
-            print();
-            processInput();
-            isFinished();
-        }
-        print();
-        System.out.println("The End.");
-    }
 
     // ***********************
     // Input Methods
@@ -68,10 +52,7 @@ public class Game {
     /**
      * Processes the users input into commands
      */
-    private void processInput() {
-        Scanner sc = new Scanner(System.in);
-        String input = sc.nextLine();
-
+    public void processInput(String input) {
         Action action = parser.parse(input);
         ArrayList<Nouns> nouns = action.getNouns();
         Optional<Nouns> noun = action.getFirstNoun();
@@ -98,6 +79,7 @@ public class Game {
         default:
             throw new IllegalStateException("Illegal verb thingamajing");
         }
+        view.update();
     }
 
     /**
@@ -186,27 +168,13 @@ public class Game {
     // ***********************
     // Other
     // ***********************
-    private void isFinished() {
+    public boolean isFinished() {
         if (player.getHitpoints() <= 0) {
             finished = true;
         } else if (map.isCharted()) {
             finished = true;
         }
-    }
-
-    private void print() {
-        view.print();
-        for (String s : printList) {
-            System.out.println(s);
-        }
-        printList = new ArrayList<>();
-    }
-
-    /**
-     * Print out the opening message for the player.
-     */
-    private void printWelcome() {
-        printList.add("Welcome to the World of Zuul!");
+        return finished;
     }
 
     /**

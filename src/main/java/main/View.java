@@ -1,10 +1,12 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import characters.*;
 import map.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import java.awt.event.*;
 
 import java.awt.*;
 
@@ -25,7 +27,6 @@ public class View extends JPanel {
     public static final String ANSI_ITALIC = "\u001B[3m";
     public static final String ANSI_UNDERLINE = "\u001B[4m";
     public static final String ANSI_BLINK = "\u001B[5m";
-
     public static final String ANSI_CLEAR = "\033\143";
 
     public static final String ANSI_BLACK = "\u001B[30m";
@@ -51,13 +52,16 @@ public class View extends JPanel {
     private Map map;
     private Player player;
     private ArrayList<NPC> npcs;
+    private ArrayList<Place> places;
     private Place playerPlace;
+    private Game game;
 
     private JFrame mainFrame;
     private JPanel placePanel;
     private JPanel inventoryPanel;
     private JPanel roomPanel;
     private JPanel terminalPanel;
+    private JTextField terminal;
 
     // ***********************
     // Constructor
@@ -68,18 +72,79 @@ public class View extends JPanel {
      * @param map    the map to view
      * @param player the player
      */
-    public View(Map map, Player player, ArrayList<NPC> npcs) {
+    public View(Map map, Player player, ArrayList<NPC> npcs, Game game) {
         this.map = map;
         this.player = player;
         this.npcs = npcs;
+        this.places = new ArrayList<>();
         this.playerPlace = player.getPlace();
+        this.game = game;
+        terminal = new JTextField();
 
+        initKeyBindings();
         initUI();
+        update();
     }
 
     // ***********************
     // Main Methods
     // ***********************
+    public void update() {
+        System.out.println("update");
+        for (Place place : places) {
+            updatePlace(place);
+        }
+
+    }
+
+    // ***********************
+    // Update methods
+    // ***********************
+    private void updatePlace(Place place) {
+        Optional<String> attr = Optional.of("?????");
+        String biom = "?????";
+        String text = "";
+        if (place.isCharted()) {
+            attr = place.getAttribute();
+            biom = place.getBiome();
+            if (place.getAttribute().isPresent()) {
+                text = "<html>" + attr.get() + "<br>" + biom + "</html>";
+                Color color;
+                if(place.isDangerous()) {
+                    color = Color.RED;
+                } else if (place.isHelpful()) {
+                    color = Color.GREEN;
+                } else if (place.isNeutral()) {
+                    color = Color.GRAY;
+                } else {
+                    color = Color.LIGHT_GRAY;
+                }
+                place.setBackground(color);
+
+            } else {
+                text = "<html>" + biom + "</html>";
+            }
+        } else {
+            text = "<html>" + attr.get() + "<br>" + biom + "</html>";
+        }
+        place.getLabel().setText(text);
+    }
+
+    // ***********************
+    // Initalization methods
+    // ***********************
+    private void initKeyBindings() {
+        addKeyBinding(this, KeyEvent.VK_ESCAPE, "escape", evt -> {
+            System.exit(0);
+        });
+
+        addKeyBinding(this, KeyEvent.VK_ENTER, "enter", evt -> {
+            String input = terminal.getText();
+            game.processInput(input);
+            terminal.setText("");
+        });
+    }
+
     private void initUI() {
         mainFrame = new JFrame();
         inventoryPanel = new JPanel();
@@ -140,10 +205,6 @@ public class View extends JPanel {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    public void update() {
-
-    }
-
     private void initPlaces() {
         placePanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -159,27 +220,10 @@ public class View extends JPanel {
                 p.setBorder(b);
                 p.setBackground(Color.LIGHT_GRAY);
 
-                String attr = "?????";
-                String biom = "?????";
-                if(p.isCharted()) {
-                    attr = p.getAttribute();
-                    biom = p.getBiome();
-                }
-
-                String t = "";
-                if(p.getAttribute().equals("    ")) {
-                    t = "<html>" + biom + "</html>";
-                } else {
-                    t = "<html>" + attr + "<br>" + biom + "</html>";
-                }
-                JLabel label = new JLabel(t);
-                label.setHorizontalAlignment(JLabel.CENTER);
-                label.setVerticalAlignment(JLabel.CENTER);
-                p.add(label);
+                places.add(p);
                 placePanel.add(p, gbc);
             }
         }
-        placePanel.setBackground(Color.GREEN);
     }
 
     private void initInventory() {
@@ -198,37 +242,12 @@ public class View extends JPanel {
     private void initTerminal() {
         terminalPanel.setLayout(new BoxLayout(terminalPanel, BoxLayout.Y_AXIS));
         terminalPanel.add(new JLabel("LOG: "));
-        terminalPanel.add(new JTextField());
+        terminalPanel.add(terminal);
     }
 
-    public void print() {
-        playerPlace = player.getPlace();
-        System.out.print(ANSI_CLEAR);
-        System.out.println(HEAVY_LINE);
-        System.out.println("[Map of the World]");
-        System.out.println(MEDIUM_LINE);
-        System.out.println(getPrintableMap());
-        System.out.println(MEDIUM_LINE);
-        System.out.println();
-
-        System.out.println(ANSI_BOLD + "[Player]: " + player.getName() + ANSI_RESET);
-        System.out.println(MEDIUM_LINE);
-        System.out.println("[Stats]: " + player.getStats());
-        System.out.println(LIGHT_LINE);
-        System.out.println("[Inventory]:\n" + player.getInventory());
-        System.out.println(MEDIUM_LINE);
-        System.out.println();
-
-        System.out.println(ANSI_BOLD + "[Place]: " + ANSI_ITALIC + playerPlace.getName() + ANSI_RESET);
-        System.out.println(MEDIUM_LINE);
-        System.out.println("[NPCs]: " + playerPlace.npcsToString());
-        System.out.println(LIGHT_LINE);
-        System.out.println("[Items]: " + playerPlace.itemsToString());
-        System.out.println(MEDIUM_LINE);
-        System.out.println(HEAVY_LINE);
-        System.out.println();
-    }
-
+    // ***********************
+    // Support Methods
+    // ***********************
     /**
      * Returns a printable map of the world with colors
      *
@@ -262,11 +281,31 @@ public class View extends JPanel {
                         s += ANSI_BRIGHT_BLACK;
                     }
                 }
-                s += l.getShortName() + ANSI_RESET + "\t";
+                s += l.toString() + ANSI_RESET + "\t";
             }
             s += "\n";
         }
         return s.substring(0, s.length() - 2);
     }
 
+    /**
+     * Adds a key binding to the specifed component.
+     *
+     * @param comp the component to add to.
+     * @param keyCode the key to take action to.
+     * @param id the name of the binding.
+     * @param lambda the action to trigger.
+     */
+    public void addKeyBinding(JComponent comp, int keyCode, String id, ActionListener lambda) {
+        InputMap im = comp.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap ap = comp.getActionMap();
+
+        im.put(KeyStroke.getKeyStroke(keyCode, 0, false), id);
+        ap.put(id, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                lambda.actionPerformed(e);
+            }
+        });
+    }
 }
