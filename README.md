@@ -1,1 +1,2 @@
-# iraldors-quest is a spinof of a project in our first programing course at uni.
+# iraldors-quest
+This project is a spinof of a project in our first programing course at uni.
