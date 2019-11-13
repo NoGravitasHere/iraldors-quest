@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import characters.*;
 import items.*;
 import javax.swing.*;
+import java.util.Optional;
 
 /**
  * This class is a model of a place on the map in the game
@@ -17,19 +18,8 @@ public class Place extends JPanel {
     // ***********************
     // Variables
     // ***********************
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_BLACK = "\u001B[30m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_PURPLE = "\u001B[35m";
-    public static final String ANSI_CYAN = "\u001B[36m";
-    public static final String ANSI_WHITE = "\u001B[37m";
-    public static final String ANSI_BRIGHT_BLACK = "\u001B[90m";
-
     private String biome;
-    private String attribute;
+    private Optional<String> attribute;
     private boolean charted;
     private boolean dangerous;
     private boolean helpful;
@@ -37,6 +27,7 @@ public class Place extends JPanel {
 
     private ArrayList<NPC> npcs;
     private ArrayList<Item> items;
+    private JLabel label;
 
     // ***********************
     // Constructors
@@ -46,13 +37,14 @@ public class Place extends JPanel {
      */
     public Place() {
         this.biome = "Start";
-        this.attribute = "    ";
+        this.attribute = Optional.empty();
         this.dangerous = false;
         this.helpful = false;
         this.neutral = false;
         this.charted = false;
         npcs = new ArrayList<>();
         items = new ArrayList<>();
+        label = new JLabel();
     }
 
     /**
@@ -71,7 +63,7 @@ public class Place extends JPanel {
      * @param biome     the biome
      * @param attribute the attribute of the biome
      */
-    public Place(String biome, String attribute) {
+    public Place(String biome, Optional<String> attribute) {
         this(biome);
         this.attribute = attribute;
     }
@@ -83,7 +75,7 @@ public class Place extends JPanel {
      * @param attribute the attribute of the biome
      * @param dangerous whether the attribute is dangerous
      */
-    public Place(String biome, String attribute, boolean dangerous) {
+    public Place(String biome, Optional<String> attribute, boolean dangerous) {
         this(biome, attribute);
         this.dangerous = dangerous;
     }
@@ -96,7 +88,7 @@ public class Place extends JPanel {
      * @param dangerous whether the attribute is dangerous
      * @param helpful   whetether the attribute is helpful
      */
-    public Place(String biome, String attribute, boolean dangerous, boolean helpful) {
+    public Place(String biome, Optional<String> attribute, boolean dangerous, boolean helpful) {
         this(biome, attribute, dangerous);
         this.helpful = helpful;
     }
@@ -110,7 +102,7 @@ public class Place extends JPanel {
      * @param helpful   whetether the attribute is helpful
      * @param neutral   whether the attribute is neutral
      */
-    public Place(String biome, String attribute, boolean dangerous, boolean helpful, boolean neutral) {
+    public Place(String biome, Optional<String> attribute, boolean dangerous, boolean helpful, boolean neutral) {
         this(biome, attribute, dangerous, helpful);
         this.neutral = neutral;
     }
@@ -125,7 +117,7 @@ public class Place extends JPanel {
      * @param neutral   whether the attribute is neutral
      * @param charted   determins if the place is visible to the player
      */
-    public Place(String biome, String attribute, boolean dangerous, boolean helpful, boolean neutral, boolean charted) {
+    public Place(String biome, Optional<String> attribute, boolean dangerous, boolean helpful, boolean neutral, boolean charted) {
         this(biome, attribute, dangerous, helpful, neutral);
         this.charted = charted;
     }
@@ -133,25 +125,6 @@ public class Place extends JPanel {
     // ***********************
     // Methods
     // ***********************
-    @Override
-    public String toString() {
-        String s = "";
-
-        if (isDangerous()) {
-            s += ANSI_RED;
-        } else if (isHelpful()) {
-            s += ANSI_GREEN;
-        } else if (isNeutral()) {
-            s += ANSI_BRIGHT_BLACK;
-        }
-        s += attribute + " " + biome + ANSI_RESET;
-        s += "\n---------------------------------\n";
-        s += "[NPCs]: " + npcsToString() + "\n";
-        s += "[Items]: " + itemsToString() + "\n";
-        s += "---------------------------------";
-        return s;
-    }
-
     /**
      * Adds a npc to the place
      *
@@ -220,24 +193,6 @@ public class Place extends JPanel {
     // Getters & Setters
     // ***********************
     /**
-     * Returns a nine characther string of the four first letters in the attribute
-     * and biome.
-     *
-     * @return the string described above. If the place is uncharted "???? ????".
-     */
-    public String getShortName() {
-        if (!isCharted()) {
-            return "???? ????";
-        }
-
-        String s = "";
-        s += attribute.substring(0, 4);
-        s += " ";
-        s += biome.substring(0, 4);
-        return s;
-    }
-
-    /**
      * @return the npcs
      */
     public ArrayList<NPC> getNpcs() {
@@ -289,14 +244,21 @@ public class Place extends JPanel {
     /**
      * @return the attribute
      */
-    public String getAttribute() {
+    public Optional<String> getAttribute() {
         return attribute;
+    }
+
+    /**
+     * @return the label
+     */
+    public JLabel getLabel() {
+        return label;
     }
 
     /**
      * @param attribute the attribute to set
      */
-    public void setAttribute(String attribute) {
+    public void setAttribute(Optional<String> attribute) {
         this.attribute = attribute;
     }
 

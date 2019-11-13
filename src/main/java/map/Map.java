@@ -1,6 +1,7 @@
 package map;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Random;
 import characters.*;
 import items.*;
@@ -116,16 +117,16 @@ public class Map{
         Random r = new Random();
 
         String biome = biomes[r.nextInt(biomes.length)];
-        String attr = "";
+        Optional<String> attr = Optional.empty();
 
         if(Math.random() < helpChance){
-            attr = gAttr[r.nextInt(gAttr.length)];
+            attr = Optional.of(gAttr[r.nextInt(gAttr.length)]);
             return new Place(biome, attr, false, true);
         } else if(Math.random() < dangerChance){
-            attr = bAttr[r.nextInt(bAttr.length)];
+            attr = Optional.of(bAttr[r.nextInt(bAttr.length)]);
             return new Place(biome, attr, true);
         } else if(Math.random() < neutralChance){
-            attr = nAttr[r.nextInt(nAttr.length)];
+            attr = Optional.of(nAttr[r.nextInt(nAttr.length)]);
             return new Place(biome, attr, false, false, true);
         } else {
             return new Place(biome);
@@ -135,7 +136,7 @@ public class Map{
     }
 
     private void generateStartingPlace() {
-        startingPlace = new Place("start", "start", false, true, false, true);
+        startingPlace = new Place("Start", Optional.of("Start"), false, true, false, true);
         startX = width/2;
         startY = height/2;
         map.get(startY).set(startX, startingPlace);
@@ -148,7 +149,7 @@ public class Map{
         String s = "";
         for (int i = 0; i <  height; i++) {
             for (int j = 0; j < width; j++) {
-                s += getLocation(j, i).getShortName() + "\t";
+                s += getLocation(j, i).toString() + "\t";
             }
             s += "\n";
         }
