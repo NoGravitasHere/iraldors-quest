@@ -1,9 +1,5 @@
 *.class
-GameTest.java
 target/
-pom.xml
 .settings/
 .project
-.classpath
-.vscode
 .gitignore

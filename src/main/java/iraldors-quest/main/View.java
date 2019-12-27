@@ -80,7 +80,6 @@ public class View extends JPanel {
         this.playerPlace = player.getPlace();
         this.game = game;
         terminal = new JTextField();
-
         initKeyBindings();
         initUI();
         update();

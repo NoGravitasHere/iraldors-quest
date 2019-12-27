@@ -2,6 +2,8 @@ package main;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Scanner;
+
 import characters.*;
 import map.*;
 import parser.*;
@@ -45,6 +47,13 @@ public class Game {
     // ***********************
     // Main Methods
     // ***********************
+
+    public void run(){
+        Scanner sc = new Scanner(System.in);
+        while(!isFinished()){
+            processInput(sc.nextLine());
+        }
+    }
 
     // ***********************
     // Input Methods

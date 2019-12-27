@@ -1,9 +1,14 @@
-import main.Game;
+package main;
 
 public class Main {
 
     public static void main(String[] args) {
-        Game game = new Game(500, 500, "abc", 3);
+        System.out.println(123);
+        // JFrame frame = new JFrame();
+        // frame.pack();
+        // frame.setVisible(true);
+        // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Game game = new Game(10, 10, "abc", 3);
     }
 
 }
