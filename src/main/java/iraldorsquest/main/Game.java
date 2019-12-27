@@ -1,12 +1,12 @@
-package main;
+package iraldorsquest.main;
 
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Scanner;
 
-import characters.*;
-import map.*;
-import parser.*;
+import iraldorsquest.characters.*;
+import iraldorsquest.map.*;
+import iraldorsquest.parser.*;
 
 /**
  * This class is the main class of the game
@@ -53,6 +53,7 @@ public class Game {
         while(!isFinished()){
             processInput(sc.nextLine());
         }
+        sc.close();
     }
 
     // ***********************

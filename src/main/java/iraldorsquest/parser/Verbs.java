@@ -1,4 +1,4 @@
-package parser;
+package iraldorsquest.parser;
 
 public enum Verbs {
     UNKNOWN,

@@ -1,9 +1,9 @@
-package main;
+package iraldorsquest.main;
 
 import java.util.ArrayList;
 import java.util.Optional;
-import characters.*;
-import map.*;
+import iraldorsquest.characters.*;
+import iraldorsquest.map.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.event.*;
@@ -22,6 +22,8 @@ public class View extends JPanel {
     // ***********************
     // Variables
     // ***********************
+    private static final long serialVersionUID = 1L;
+
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BOLD = "\u001B[1m";
     public static final String ANSI_ITALIC = "\u001B[3m";

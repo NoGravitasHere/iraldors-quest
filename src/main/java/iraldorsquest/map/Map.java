@@ -1,10 +1,10 @@
-package map;
+package iraldorsquest.map;
 
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Random;
-import characters.*;
-import items.*;
+import iraldorsquest.characters.*;
+import iraldorsquest.items.*;
 
 /**
  * This class is the map in the game

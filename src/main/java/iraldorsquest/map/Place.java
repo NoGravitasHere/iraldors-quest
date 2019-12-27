@@ -1,8 +1,8 @@
-package map;
+package iraldorsquest.map;
 
 import java.util.ArrayList;
-import characters.*;
-import items.*;
+import iraldorsquest.characters.*;
+import iraldorsquest.items.*;
 import javax.swing.*;
 import java.util.Optional;
 
@@ -18,6 +18,7 @@ public class Place extends JPanel {
     // ***********************
     // Variables
     // ***********************
+    private static final long serialVersionUID = 1L;
     private String biome;
     private Optional<String> attribute;
     private boolean charted;

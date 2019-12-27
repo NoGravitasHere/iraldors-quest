@@ -1,8 +1,8 @@
-package characters;
+package iraldorsquest.characters;
 
-import map.*;
-import items.*;
-import parser.*;
+import iraldorsquest.map.*;
+import iraldorsquest.items.*;
+import iraldorsquest.parser.*;
 /**
  * This class is a model of a place on the map in the game
  *

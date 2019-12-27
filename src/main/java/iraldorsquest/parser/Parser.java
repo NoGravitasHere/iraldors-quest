@@ -1,6 +1,6 @@
-package parser;
+package iraldorsquest.parser;
 
-import characters.NPC;
+import iraldorsquest.characters.NPC;
 import java.util.ArrayList;
 import java.util.Arrays;
 

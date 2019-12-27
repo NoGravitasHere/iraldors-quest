@@ -1,4 +1,4 @@
-package parser;
+package iraldorsquest.parser;
 
 import java.util.ArrayList;
 import java.util.Optional;

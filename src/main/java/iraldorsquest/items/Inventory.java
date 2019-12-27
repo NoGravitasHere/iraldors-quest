@@ -1,4 +1,4 @@
-package items;
+package iraldorsquest.items;
 
 import java.util.ArrayList;
 
@@ -7,8 +7,9 @@ public class Inventory extends ArrayList<Item>{
     //***********************
     // Variables
     //***********************
+    private static final long serialVersionUID = 1L;
 
-    //***********************
+    // ***********************
     // Constructor
     //***********************
     public Inventory(Item ... items) {
