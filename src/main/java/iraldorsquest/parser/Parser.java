@@ -52,65 +52,69 @@ public class Parser {
     }
 
     private Verbs parseVerb(String verb) {
+        Verbs v;
         switch (verb.toLowerCase()) {
-        case "help":
-            return Verbs.HELP;
-
-        case "quit":
-            return Verbs.QUIT;
-
-        case "move":
-        case "go":
-        case "m":
-        case "mv":
-            return Verbs.MOVE;
-
-        case "talk":
-        case "t":
-            return Verbs.TALK;
-
-        case "attack":
-        case "atk":
-        case "a":
-            return Verbs.ATTACK;
-
-        case "take":
-            return Verbs.TAKE;
-
-        default:
-            return Verbs.UNKNOWN;
+            case "help":
+                v = Verbs.HELP;
+                break;
+            case "quit":
+                v = Verbs.QUIT;
+                break;
+            case "move":
+            case "go":
+            case "m":
+            case "mv":
+                v = Verbs.MOVE;
+                break;
+            case "talk":
+            case "t":
+                v = Verbs.TALK;
+                break;
+            case "attack":
+            case "atk":
+            case "a":
+                v = Verbs.ATTACK;
+                break;
+            case "take":
+                v = Verbs.TAKE;
+                break;
+            default:
+                v = Verbs.UNKNOWN;
         }
+        return v;
     }
 
     private Nouns parseNoun(String noun) {
+        Nouns n;
         switch(noun.toLowerCase()) {
             case "north":
             case "w":
-            return Nouns.NORTH;
-
+                n = Nouns.NORTH;
+                break;
             case "south":
             case "s":
-            return Nouns.SOUTH;
-
+                n = Nouns.SOUTH;
+                break;
             case "east":
             case "d":
-            return Nouns.EAST;
-
+                n = Nouns.EAST;
+                break;
             case "west":
             case "a":
-            return Nouns.WEST;
-
+                n = Nouns.WEST;
+                break;
             case "items":
-            return Nouns.ITEMS;
-
+                n = Nouns.ITEMS;
+                break;
             default:
-            if(noun.matches("(item|i)(\\d+)?")) {
-                return Nouns.ITEM;
-            } else if(NPC.getPossibleNames().contains(noun) || noun.equals("npc")) {
-                return Nouns.NPC;
-            }
-            return Nouns.UNKOWN;
+                if(noun.matches("(item|i)(\\d+)?")) {
+                    return Nouns.ITEM;
+                } else if(NPC.getPossibleNames().contains(noun) || noun.equals("npc")) {
+                    return Nouns.NPC;
+                }
+                n =  Nouns.UNKOWN;
         }
+        return n;
     }
 
     private String removeRedundantWords(String text) {
