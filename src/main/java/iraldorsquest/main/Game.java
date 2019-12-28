@@ -21,7 +21,7 @@ public class Game {
     // Variables
     // ***********************
     private Map map;
-    private View view;
+    private Optional<View> view;
     private Player player;
     private ArrayList<NPC> npcs;
     private ArrayList<String> printList;
@@ -31,6 +31,8 @@ public class Game {
     // ***********************
     // Constructor
     // ***********************
+
+
     /**
      * Create the game and initialise its internal map.
      */
@@ -39,9 +41,14 @@ public class Game {
         player = new Player(playerName, map.getStartX(), map.getStartY(), map.getStartingPlace());
         npcs = map.getNpcs();
         parser = new Parser();
-        view = new View(map, player, npcs, this);
+        view = Optional.empty();
         printList = new ArrayList<>();
         chartAdjacentPlaces(player.getxCoordinate(), player.getyCoordinate());
+    }
+
+    public Game(int w, int h, String playerName, int noNPCs, View view) {
+        this(w, h, playerName, noNPCs);
+        this.view = Optional.of(view);
     }
 
     // ***********************
@@ -89,7 +96,12 @@ public class Game {
         default:
             throw new IllegalStateException("Illegal verb thingamajing");
         }
-        view.update();
+
+        if(view.isPresent()){
+            view.get().update();
+        } else {
+            System.out.println("Processed but no view");
+        }
     }
 
     /**
@@ -249,5 +261,46 @@ public class Game {
             printList.add("unkown direction");
         }
         return b;
+    }
+
+
+    // ***********************
+    // Getters & Setters
+    // ***********************
+    /**
+     * @param view the view to set
+     */
+    public void setView(View view) {
+        if(!this.view.isPresent()) {
+            this.view = Optional.of(view);
+        }
+    }
+
+    /**
+     * @return the map
+     */
+    public Map getMap() {
+        return map;
+    }
+
+    /**
+     * @return the npcs
+     */
+    public ArrayList<NPC> getNpcs() {
+        return npcs;
+    }
+
+    /**
+     * @return the parser
+     */
+    public Parser getParser() {
+        return parser;
+    }
+
+    /**
+     * @return the player
+     */
+    public Player getPlayer() {
+        return player;
     }
 }

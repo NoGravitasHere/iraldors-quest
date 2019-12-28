@@ -48,7 +48,7 @@ public class View extends JPanel {
     public static final String HEAVY_LINE = ANSI_BRIGHT_BLACK
             + "#########################################################################" + ANSI_RESET;
 
-    private static final Border standardBorder = new LineBorder(Color.DARK_GRAY);
+    private static Border standardBorder;
     private static final Color standardBackground = Color.GRAY;
 
     private Map map;
@@ -57,6 +57,8 @@ public class View extends JPanel {
     private ArrayList<Place> places;
     private Place playerPlace;
     private Game game;
+
+    private Dimension minSize;
 
     private JFrame mainFrame;
     private JPanel placePanel;
@@ -71,16 +73,20 @@ public class View extends JPanel {
     /**
      * Creates a view
      *
-     * @param map    the map to view
-     * @param player the player
+     * @param game is the game to base the view on
      */
-    public View(Map map, Player player, ArrayList<NPC> npcs, Game game) {
-        this.map = map;
-        this.player = player;
-        this.npcs = npcs;
+    public View(Game game) {
+        Border border = new LineBorder(Color.DARK_GRAY);;
+        Border margin = new EmptyBorder(10,10,10,10);
+        standardBorder = new CompoundBorder(border, margin);
+
+        minSize = new Dimension(750, 750);
+        this.game = game;
+        this.map = game.getMap();
+        this.player = game.getPlayer();
+        this.npcs = game.getNpcs();
         this.places = new ArrayList<>();
         this.playerPlace = player.getPlace();
-        this.game = game;
         terminal = new JTextField();
         initKeyBindings();
         initUI();
@@ -91,7 +97,6 @@ public class View extends JPanel {
     // Main Methods
     // ***********************
     public void update() {
-        System.out.println("update");
         for (Place place : places) {
             updatePlace(place);
         }
@@ -149,6 +154,7 @@ public class View extends JPanel {
     private void initUI() {
         mainFrame = new JFrame();
         inventoryPanel = new JPanel();
+        mainFrame.setMinimumSize(minSize);
 
         ArrayList<JPanel> subpanels = new ArrayList<>();
         placePanel = new JPanel();
