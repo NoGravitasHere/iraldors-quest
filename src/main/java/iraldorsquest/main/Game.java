@@ -87,8 +87,10 @@ public class Game {
         case TAKE:
             break;
         case HELP:
+            helpInput(noun);
             break;
         case QUIT:
+            quitInput();
             break;
         case UNKNOWN:
             printList.add("unkown verb");
@@ -185,6 +187,18 @@ public class Game {
                 printList.add("You draw your sword and lash out at the imagined threats");
             }
         });
+    }
+
+    private void quitInput() {
+        System.exit(0);
+    }
+
+    private void helpInput(Optional<Nouns> noun) {
+        String helpMessage = "";
+        if(noun.isEmpty()) {
+            helpMessage += "git gud";
+        }
+        System.out.println(helpMessage);
     }
 
     // ***********************
