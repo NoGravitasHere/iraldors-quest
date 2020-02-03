@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.Scanner;
 
 import iraldorsquest.characters.*;
+import iraldorsquest.items.Item;
 import iraldorsquest.map.*;
 import iraldorsquest.parser.Nouns;
 import iraldorsquest.parser.Verbs;

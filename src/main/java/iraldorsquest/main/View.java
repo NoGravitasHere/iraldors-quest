@@ -1,6 +1,8 @@
 package iraldorsquest.main;
 
 import iraldorsquest.characters.*;
+import iraldorsquest.items.Item;
+import iraldorsquest.items.Rarities;
 import iraldorsquest.map.*;
 import iraldorsquest.parser.*;
 import iraldorsquest.parser.Action;
@@ -44,6 +46,8 @@ public class View extends JPanel {
     public static final String ANSI_WHITE = "\u001B[37m";
     public static final String ANSI_BRIGHT_BLACK = "\u001B[90m";
 
+    public static final Color TEXT_COLOR = Color.WHITE;
+
     public static final String LIGHT_LINE = ANSI_BRIGHT_BLACK
             + "-------------------------------------------------------------------------" + ANSI_RESET;
     public static final String MEDIUM_LINE = "========================================================================="
@@ -66,7 +70,7 @@ public class View extends JPanel {
 
     private JFrame mainFrame;
     private JPanel placePanel;
-    private JPanel inventoryPanel;
+    private JPanel playerPanel;
     private JPanel roomPanel;
     private JPanel terminalPanel;
     private JTextField terminal;
@@ -141,6 +145,17 @@ public class View extends JPanel {
         place.getLabel().setText(text);
     }
 
+    private void updatePlayerInventory(Player player, JPanel inventoryPanel) {
+        var Inventory = player.getInventory();
+        inventoryPanel = new JPanel();
+        for (Item item : Inventory) {
+            var color = getRarityColor(item.getRarity());
+            var itemLabel = new JLabel(item.toString());
+            itemLabel.setForeground(color);
+            inventoryPanel.add(itemLabel);
+        }
+    }
+
     // ***********************
     // Initalization methods
     // ***********************
@@ -158,17 +173,17 @@ public class View extends JPanel {
 
     private void initUI() {
         mainFrame = new JFrame();
-        inventoryPanel = new JPanel();
+        playerPanel = new JPanel();
         mainFrame.setMinimumSize(minSize);
 
         ArrayList<JPanel> subpanels = new ArrayList<>();
         placePanel = new JPanel();
-        inventoryPanel = new JPanel();
+        playerPanel = new JPanel();
         roomPanel = new JPanel();
         terminalPanel = new JPanel();
 
         subpanels.add(placePanel);
-        subpanels.add(inventoryPanel);
+        subpanels.add(playerPanel);
         subpanels.add(roomPanel);
         subpanels.add(terminalPanel);
 
@@ -178,7 +193,7 @@ public class View extends JPanel {
         }
 
         initPlaces();
-        initInventory();
+        initPlayer();
         initRoom();
         initTerminal();
 
@@ -198,7 +213,7 @@ public class View extends JPanel {
 
         gbc.gridx = 1;
         gbc.gridheight = 2;
-        this.add(inventoryPanel, gbc);
+        this.add(playerPanel, gbc);
         gbc.gridheight = 1;
 
         gbc.gridx = 0;
@@ -238,10 +253,16 @@ public class View extends JPanel {
         }
     }
 
-    private void initInventory() {
-        inventoryPanel.setLayout(new BoxLayout(inventoryPanel, BoxLayout.Y_AXIS));
-        inventoryPanel.add(new JLabel(player.getName()));
-        inventoryPanel.add(new JLabel(player.getStats()));
+    private void initPlayer() {
+        playerPanel.setLayout(new BoxLayout(playerPanel, BoxLayout.Y_AXIS));
+        playerPanel.add(new JLabel("PLAYER: "));
+        playerPanel.add(new JLabel(player.getName()));
+        playerPanel.add(new JLabel(player.getStats()));
+
+        playerPanel.add(new JLabel("PLAYER INVENTORY: "));
+        var inventoryPanel = new JPanel();
+        playerPanel.add(inventoryPanel);
+        updatePlayerInventory(player, inventoryPanel);
     }
 
     private void initRoom() {
@@ -260,6 +281,36 @@ public class View extends JPanel {
     // ***********************
     // Support Methods
     // ***********************
+    /**
+     * Determins the appropiate color for the rarity.
+     * @param rarity the rarity
+     * @return the color matching the rarity
+     */
+    public Color getRarityColor(Rarities rarity) {
+        Color c = null;
+        switch (rarity) {
+            case NORMAL:
+                c = Color.WHITE;
+                break;
+            case UNCOMON:
+                c = Color.GREEN;
+                break;
+            case RARE:
+                c = Color.CYAN;
+                break;
+            case EPIC:
+                c = Color.ORANGE;
+                break;
+            case LEGENDARY:
+                c = Color.MAGENTA;
+                break;
+            default:
+                c = TEXT_COLOR;
+                break;
+        }
+        return c;
+    }
+
     /**
      * Returns a printable map of the world with colors
      *

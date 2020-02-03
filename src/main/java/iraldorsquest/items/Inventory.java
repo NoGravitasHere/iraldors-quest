@@ -31,7 +31,7 @@ public class Inventory extends ArrayList<Item>{
     @Override
     public String toString() {
         if(isEmpty()) {
-            return "";
+            return "Nothing here";
         }
 
         String s = "";
