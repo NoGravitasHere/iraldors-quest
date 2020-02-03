@@ -1,14 +1,17 @@
 package iraldorsquest.main;
 
-import java.util.ArrayList;
-import java.util.Optional;
 import iraldorsquest.characters.*;
 import iraldorsquest.map.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import java.awt.event.*;
+import iraldorsquest.parser.*;
+import iraldorsquest.parser.Action;
+
+import java.util.ArrayList;
+import java.util.Optional;
 
 import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.border.*;
 
 /**
  * This class creates a vieweble elemnt and prints it to the terminal
@@ -57,6 +60,7 @@ public class View extends JPanel {
     private ArrayList<Place> places;
     private Place playerPlace;
     private Game game;
+    private Parser parser;
 
     private Dimension minSize;
 
@@ -75,13 +79,14 @@ public class View extends JPanel {
      *
      * @param game is the game to base the view on
      */
-    public View(Game game) {
+    public View(Game game, Parser parser) {
         Border border = new LineBorder(Color.DARK_GRAY);;
         Border margin = new EmptyBorder(10,10,10,10);
         standardBorder = new CompoundBorder(border, margin);
 
         minSize = new Dimension(750, 750);
         this.game = game;
+        this.parser = parser;
         this.map = game.getMap();
         this.player = game.getPlayer();
         this.npcs = game.getNpcs();
@@ -145,8 +150,8 @@ public class View extends JPanel {
         });
 
         addKeyBinding(this, KeyEvent.VK_ENTER, "enter", evt -> {
-            String input = terminal.getText();
-            game.processInput(input);
+            Action action = parser.parse(terminal.getText());
+            game.processInput(action);
             terminal.setText("");
         });
     }

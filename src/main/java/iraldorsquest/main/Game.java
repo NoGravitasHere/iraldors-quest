@@ -6,7 +6,9 @@ import java.util.Scanner;
 
 import iraldorsquest.characters.*;
 import iraldorsquest.map.*;
-import iraldorsquest.parser.*;
+import iraldorsquest.parser.Nouns;
+import iraldorsquest.parser.Verbs;
+import iraldorsquest.parser.Action;
 
 /**
  * This class is the main class of the game
@@ -25,7 +27,6 @@ public class Game {
     private Player player;
     private ArrayList<NPC> npcs;
     private ArrayList<String> printList;
-    private Parser parser;
     private boolean finished = false;
 
     // ***********************
@@ -40,7 +41,6 @@ public class Game {
         map = new Map(w, h);
         player = new Player(playerName, map.getStartX(), map.getStartY(), map.getStartingPlace());
         npcs = map.getNpcs();
-        parser = new Parser();
         view = Optional.empty();
         printList = new ArrayList<>();
         chartAdjacentPlaces(player.getxCoordinate(), player.getyCoordinate());
@@ -55,13 +55,6 @@ public class Game {
     // Main Methods
     // ***********************
 
-    public void run(){
-        Scanner sc = new Scanner(System.in);
-        while(!isFinished()){
-            processInput(sc.nextLine());
-        }
-        sc.close();
-    }
 
     // ***********************
     // Input Methods
@@ -69,34 +62,31 @@ public class Game {
     /**
      * Processes the users input into commands
      */
-    public void processInput(String input) {
-        Action action = parser.parse(input);
-        ArrayList<Nouns> nouns = action.getNouns();
+    public void processInput(Action action) {
         Optional<Nouns> noun = action.getFirstNoun();
-
         switch (action.getVerb()) {
-        case MOVE:
-            noun.ifPresent(this::moveInput);
-            break;
-        case TALK:
-            noun.ifPresent(this::talkInput);
-            break;
-        case ATTACK:
-            noun.ifPresent(this::attackInput);
-            break;
-        case TAKE:
-            break;
-        case HELP:
-            helpInput(noun);
-            break;
-        case QUIT:
-            quitInput();
-            break;
-        case UNKNOWN:
-            printList.add("unkown verb");
-            break;
-        default:
-            throw new IllegalStateException("Illegal verb thingamajing");
+            case MOVE:
+                noun.ifPresent(this::moveInput);
+                break;
+            case TALK:
+                noun.ifPresent(this::talkInput);
+                break;
+            case ATTACK:
+                noun.ifPresent(this::attackInput);
+                break;
+            case TAKE:
+                break;
+            case HELP:
+                helpInput(noun);
+                break;
+            case QUIT:
+                quitInput();
+                break;
+            case UNKNOWN:
+                printList.add("unkown verb");
+                break;
+            default:
+                throw new IllegalStateException("Illegal verb thingamajing");
         }
 
         if(view.isPresent()){
@@ -106,7 +96,7 @@ public class Game {
         }
     }
 
-    /**
+    /**-
      * Moves the player in a direction
      *
      * @param noun the direction to move in.
@@ -145,17 +135,17 @@ public class Game {
      * @param noun the name of the npc
      */
     private void talkInput(Nouns noun) {
-        ArrayList<String> a = parser.getNouns(parser.getInput());
-        ArrayList<NPC> npcsInLocation = player.getPlace().getNpcs();
-        System.out.println(npcsInLocation);
-        System.out.println(a);
+        // ArrayList<String> a = parser.getNouns(parser.getInput());
+        // ArrayList<NPC> npcsInLocation = player.getPlace().getNpcs();
+        // System.out.println(npcsInLocation);
+        // System.out.println(a);
 
-        for (NPC npc : npcsInLocation) {
-            if(a.contains(npc.getName()) || a.contains("npc")) {
-                printList.add("You approach " + npc.getName() + " who turns around and says: ");
-                printList.add("\"" + npc.getDialogue() + "\"");
-            }
-        }
+        // for (NPC npc : npcsInLocation) {
+        //     if(a.contains(npc.getName()) || a.contains("npc")) {
+        //         printList.add("You approach " + npc.getName() + " who turns around and says: ");
+        //         printList.add("\"" + npc.getDialogue() + "\"");
+        //     }
+        // }
     }
 
     /**
@@ -302,13 +292,6 @@ public class Game {
      */
     public ArrayList<NPC> getNpcs() {
         return npcs;
-    }
-
-    /**
-     * @return the parser
-     */
-    public Parser getParser() {
-        return parser;
     }
 
     /**
