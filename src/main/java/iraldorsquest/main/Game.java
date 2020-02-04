@@ -2,13 +2,10 @@ package iraldorsquest.main;
 
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.Scanner;
 
 import iraldorsquest.characters.*;
-import iraldorsquest.items.Item;
 import iraldorsquest.map.*;
 import iraldorsquest.parser.Nouns;
-import iraldorsquest.parser.Verbs;
 import iraldorsquest.parser.Action;
 
 /**
@@ -76,6 +73,7 @@ public class Game {
                 noun.ifPresent(this::attackInput);
                 break;
             case TAKE:
+                noun.ifPresent(this::takeInput);
                 break;
             case HELP:
                 helpInput(noun);
@@ -136,6 +134,7 @@ public class Game {
      * @param noun the name of the npc
      */
     private void talkInput(Nouns noun) {
+        throw new UnsupportedOperationException("Not implemented yet");
         // ArrayList<String> a = parser.getNouns(parser.getInput());
         // ArrayList<NPC> npcsInLocation = player.getPlace().getNpcs();
         // System.out.println(npcsInLocation);
@@ -155,29 +154,38 @@ public class Game {
      * @param noun the npc to attack
      */
     private void attackInput(Nouns noun) {
-        npcs.stream().filter(npc -> npc.getName().equals(noun)).forEach(npc -> {
-            if (npc.getPlace() == player.getPlace()) {
-                printList.add("You try to attack the person standing by the river.");
-                printList.add("Before you can draw your sword the person spots you and runs away");
-                int x = npc.getxCoordinate();
-                int y = npc.getyCoordinate();
+        throw new UnsupportedOperationException("Not implemented yet");
+        // npcs.stream().filter(npc -> npc.getName().equals(noun)).forEach(npc -> {
+        //     if (npc.getPlace() == player.getPlace()) {
+        //         printList.add("You try to attack the person standing by the river.");
+        //         printList.add("Before you can draw your sword the person spots you and runs away");
+        //         int x = npc.getxCoordinate();
+        //         int y = npc.getyCoordinate();
 
-                npc.getPlace().removeNPC(npc);
-                if (canMove(Nouns.SOUTH, x, y)) {
-                    npc.move(Nouns.SOUTH);
-                    Place p = map.getLocation(x, y + 1);
-                    npc.setPlace(p);
-                    p.addNPCs(npc);
-                } else {
-                    npc.move(Nouns.NORTH);
-                    Place p = map.getLocation(x, y - 1);
-                    npc.setPlace(p);
-                    p.addNPCs(npc);
-                }
-            } else {
-                printList.add("You draw your sword and lash out at the imagined threats");
-            }
-        });
+        //         npc.getPlace().removeNPC(npc);
+        //         if (canMove(Nouns.SOUTH, x, y)) {
+        //             npc.move(Nouns.SOUTH);
+        //             Place p = map.getLocation(x, y + 1);
+        //             npc.setPlace(p);
+        //             p.addNPCs(npc);
+        //         } else {
+        //             npc.move(Nouns.NORTH);
+        //             Place p = map.getLocation(x, y - 1);
+        //             npc.setPlace(p);
+        //             p.addNPCs(npc);
+        //         }
+        //     } else {
+        //         printList.add("You draw your sword and lash out at the imagined threats");
+        //     }
+        // });
+    }
+
+    /**
+     * Takes an item
+     * @param noun
+     */
+    private void takeInput(Nouns noun) {
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
     private void quitInput() {
@@ -185,11 +193,7 @@ public class Game {
     }
 
     private void helpInput(Optional<Nouns> noun) {
-        String helpMessage = "";
-        if(noun.isEmpty()) {
-            helpMessage += "git gud";
-        }
-        System.out.println(helpMessage);
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
     // ***********************

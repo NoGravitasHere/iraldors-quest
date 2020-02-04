@@ -27,33 +27,7 @@ public class View extends JPanel {
     // ***********************
     // Variables
     // ***********************
-    private static final long serialVersionUID = 1L;
-
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_BOLD = "\u001B[1m";
-    public static final String ANSI_ITALIC = "\u001B[3m";
-    public static final String ANSI_UNDERLINE = "\u001B[4m";
-    public static final String ANSI_BLINK = "\u001B[5m";
-    public static final String ANSI_CLEAR = "\033\143";
-
-    public static final String ANSI_BLACK = "\u001B[30m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_PURPLE = "\u001B[35m";
-    public static final String ANSI_CYAN = "\u001B[36m";
-    public static final String ANSI_WHITE = "\u001B[37m";
-    public static final String ANSI_BRIGHT_BLACK = "\u001B[90m";
-
     public static final Color TEXT_COLOR = Color.WHITE;
-
-    public static final String LIGHT_LINE = ANSI_BRIGHT_BLACK
-            + "-------------------------------------------------------------------------" + ANSI_RESET;
-    public static final String MEDIUM_LINE = "========================================================================="
-            + ANSI_RESET;
-    public static final String HEAVY_LINE = ANSI_BRIGHT_BLACK
-            + "#########################################################################" + ANSI_RESET;
 
     private static Border standardBorder;
     private static final Color standardBackground = Color.GRAY;
@@ -197,9 +171,6 @@ public class View extends JPanel {
         initRoom();
         initTerminal();
 
-        JLabel l = new JLabel();
-        l.setText(getPrintableMap());
-
         this.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
@@ -309,46 +280,6 @@ public class View extends JPanel {
                 break;
         }
         return c;
-    }
-
-    /**
-     * Returns a printable map of the world with colors
-     *
-     * @return a map of the world
-     */
-    public String getPrintableMap() {
-        String s = "";
-        int height = map.getHeight();
-        int width = map.getWidth();
-
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                Place l = map.getLocation(j, i);
-
-                if (l == player.getPlace()) {
-                    s += ANSI_BLINK;
-                }
-                if (l.isCharted()) {
-                    if (l.hasNPC()) {
-                        s += ANSI_UNDERLINE;
-                    }
-                    if (l.hasItem()) {
-                        s += ANSI_ITALIC;
-                    }
-
-                    if (l.isDangerous()) {
-                        s += ANSI_RED;
-                    } else if (l.isHelpful()) {
-                        s += ANSI_GREEN;
-                    } else if (l.isNeutral()) {
-                        s += ANSI_BRIGHT_BLACK;
-                    }
-                }
-                s += l.toString() + ANSI_RESET + "\t";
-            }
-            s += "\n";
-        }
-        return s.substring(0, s.length() - 2);
     }
 
     /**

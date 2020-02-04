@@ -5,18 +5,6 @@ public class Item {
     //***********************
     // Variables
     //***********************
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_BLACK = "\u001B[30m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_PURPLE = "\u001B[35m";
-    public static final String ANSI_CYAN = "\u001B[36m";
-    public static final String ANSI_WHITE = "\u001B[37m";
-    public static final String ANSI_BRIGHT_YELLOW = "\u001B[93m";
-    public static final String ANSI_BRIGHT_BLACK = "\u001B[90m";
-
     private String name;
     private Rarities rarity;
     private Items item;
@@ -48,27 +36,6 @@ public class Item {
     //***********************
     @Override
     public String toString() {
-        String c = "";
-        switch(rarity) {
-            case NORMAL:
-                c = ANSI_WHITE;
-            break;
-            case UNCOMON:
-                c = ANSI_GREEN;
-            break;
-            case RARE:
-                c = ANSI_CYAN;
-            break;
-            case EPIC:
-                c = ANSI_YELLOW;
-            break;
-            case LEGENDARY:
-                c = ANSI_BRIGHT_YELLOW;
-            break;
-            default:
-            throw new IllegalStateException("Not a rarity");
-        }
-
         String i = "";
         switch(item) {
             case AXE:
@@ -96,22 +63,22 @@ public class Item {
                 a = "Normal";
             break;
             case UNCOMON:
-                a = ANSI_GREEN + "Uncommon";
+                a = "Uncommon";
             break;
             case RARE:
-                a = ANSI_CYAN + "Rare";
+                a = "Rare";
             break;
             case EPIC:
-                a = ANSI_YELLOW + "Epic";
+                a = "Epic";
             break;
             case LEGENDARY:
-                a = ANSI_BRIGHT_YELLOW + "Legendary";
+                a = "Legendary";
             break;
             default:
             throw new IllegalStateException("Not a rarity");
         }
 
-        return c + i + " (" + a + ") " + getStats() + ANSI_RESET;
+        return i + " (" + a + ") " + getStats();
     }
 
     public String getStats() {
