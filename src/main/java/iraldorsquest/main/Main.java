@@ -2,6 +2,7 @@ package iraldorsquest.main;
 
 import iraldorsquest.main.Game;
 import iraldorsquest.parser.*;
+import iraldorsquest.View.View;
 
 public class Main {
 

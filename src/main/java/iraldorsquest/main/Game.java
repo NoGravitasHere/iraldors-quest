@@ -7,6 +7,7 @@ import iraldorsquest.characters.*;
 import iraldorsquest.map.*;
 import iraldorsquest.parser.Nouns;
 import iraldorsquest.parser.Action;
+import iraldorsquest.View.View;
 
 /**
  * This class is the main class of the game
@@ -39,6 +40,7 @@ public class Game {
         map = new Map(w, h);
         player = new Player(playerName, map.getStartX(), map.getStartY(), map.getStartingPlace());
         npcs = map.getNpcs();
+        player.addItems();
         view = Optional.empty();
         printList = new ArrayList<>();
         chartAdjacentPlaces(player.getxCoordinate(), player.getyCoordinate());

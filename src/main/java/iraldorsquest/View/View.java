@@ -1,11 +1,13 @@
-package iraldorsquest.main;
+package iraldorsquest.View;
 
 import iraldorsquest.characters.*;
+import iraldorsquest.items.Inventory;
 import iraldorsquest.items.Item;
 import iraldorsquest.items.Rarities;
 import iraldorsquest.map.*;
 import iraldorsquest.parser.*;
 import iraldorsquest.parser.Action;
+import iraldorsquest.main.Game;;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -28,9 +30,9 @@ public class View extends JPanel {
     // Variables
     // ***********************
     public static final Color TEXT_COLOR = Color.WHITE;
+    private static final Color BACKGROUND_COLOR = Color.GRAY;
 
     private static Border standardBorder;
-    private static final Color standardBackground = Color.GRAY;
 
     private Map map;
     private Player player;
@@ -41,6 +43,9 @@ public class View extends JPanel {
     private Parser parser;
 
     private Dimension minSize;
+
+    private InventoryPanel playerInventory;
+    private StatsPanel playerStats;
 
     private JFrame mainFrame;
     private JPanel placePanel;
@@ -70,6 +75,7 @@ public class View extends JPanel {
         this.npcs = game.getNpcs();
         this.places = new ArrayList<>();
         this.playerPlace = player.getPlace();
+        this.playerInventory = new InventoryPanel(player.getInventory());
         terminal = new JTextField();
         initKeyBindings();
         initUI();
@@ -77,18 +83,16 @@ public class View extends JPanel {
     }
 
     // ***********************
-    // Main Methods
+    // Update methods
     // ***********************
     public void update() {
         for (Place place : places) {
             updatePlace(place);
         }
+        playerInventory.update();
 
     }
 
-    // ***********************
-    // Update methods
-    // ***********************
     private void updatePlace(Place place) {
         Optional<String> attr = Optional.of("?????");
         String biom = "?????";
@@ -117,17 +121,6 @@ public class View extends JPanel {
             text = "<html>" + attr.get() + "<br>" + biom + "</html>";
         }
         place.getLabel().setText(text);
-    }
-
-    private void updatePlayerInventory(Player player, JPanel inventoryPanel) {
-        var Inventory = player.getInventory();
-        inventoryPanel = new JPanel();
-        for (Item item : Inventory) {
-            var color = getRarityColor(item.getRarity());
-            var itemLabel = new JLabel(item.toString());
-            itemLabel.setForeground(color);
-            inventoryPanel.add(itemLabel);
-        }
     }
 
     // ***********************
@@ -163,7 +156,7 @@ public class View extends JPanel {
 
         for (JPanel panel : subpanels) {
             panel.setBorder(standardBorder);
-            panel.setBackground(standardBackground);
+            panel.setBackground(BACKGROUND_COLOR);
         }
 
         initPlaces();
@@ -229,11 +222,7 @@ public class View extends JPanel {
         playerPanel.add(new JLabel("PLAYER: "));
         playerPanel.add(new JLabel(player.getName()));
         playerPanel.add(new JLabel(player.getStats()));
-
-        playerPanel.add(new JLabel("PLAYER INVENTORY: "));
-        var inventoryPanel = new JPanel();
-        playerPanel.add(inventoryPanel);
-        updatePlayerInventory(player, inventoryPanel);
+        playerPanel.add(playerInventory);
     }
 
     private void initRoom() {
@@ -301,5 +290,30 @@ public class View extends JPanel {
                 lambda.actionPerformed(e);
             }
         });
+    }
+
+
+    class InventoryPanel extends JPanel {
+
+        private Inventory inventory;
+
+        InventoryPanel(Inventory inv) {
+            inventory = inv;
+            setBackground(BACKGROUND_COLOR);
+        }
+
+        private void update() {
+            for (Item item : inventory) {
+                var color = getRarityColor(item.getRarity());
+                var itemLabel = new JLabel(item.getAsHtml());
+                itemLabel.setForeground(color);
+                add(itemLabel);
+            }
+        }
+
+    }
+
+    class StatsPanel extends JPanel {
+
     }
 }
