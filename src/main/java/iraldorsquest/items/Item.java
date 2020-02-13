@@ -36,28 +36,57 @@ public class Item {
     //***********************
     @Override
     public String toString() {
-        String i = "";
-        switch(item) {
-            case AXE:
-                i = "Axe";
-            break;
-            case CHICKEN:
-                i = "Chicken";
-            break;
-            case MAGIC_WAND:
-                i = "Magic Wand";
-            break;
-            case SPOON:
-                i = "Spoon";
-            break;
-            case SWORD:
-                i = "Sword";
-            break;
-            default:
-            throw new IllegalStateException("Not an item");
-        }
+        String i = getItemName(item);
+        String a = getRarityName(rarity);
+        return i + " (" + a + ") " + getStats();
+    }
 
-        String a = "";
+    public String getStats() {
+        return "[" +"DMG: " + damage +  "]";
+    }
+    //***********************
+    // Getters & Setters
+    //***********************
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @return the rarity
+     */
+    public Rarities getRarity() {
+        return rarity;
+    }
+
+
+    /**
+     * @return the damage
+     */
+    public int getDamage() {
+        return damage;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setname(String name) {
+        this.name = name;
+    }
+
+    public String getAsHtml() {
+        String s = "";
+
+        s += "<b>" + getRarityName(rarity) + " " + name + "<b/>";
+        s += "<br>" + damage;
+
+        return s;
+    }
+
+    public String getRarityName(Rarities rarity) {
+        var a = "";
         switch(rarity) {
             case NORMAL:
                 a = "Normal";
@@ -77,41 +106,30 @@ public class Item {
             default:
             throw new IllegalStateException("Not a rarity");
         }
-
-        return i + " (" + a + ") " + getStats();
+        return a;
     }
 
-    public String getStats() {
-        return "[" +"DMG: " + damage +  "]";
-    }
-    //***********************
-    // Getters & Setters
-    //***********************
-    /**
-     * @return the name
-     */
-    public String getname() {
-        return name;
-    }
-
-    /**
-     * @return the rarity
-     */
-    public Rarities getRarity() {
-        return rarity;
-    }
-
-    /**
-     * @return the damage
-     */
-    public int getDamage() {
-        return damage;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public void setname(String name) {
-        this.name = name;
+    public String getItemName(Items item) {
+        var i = "";
+        switch(item) {
+            case AXE:
+                i = "Axe";
+            break;
+            case CHICKEN:
+                i = "Chicken";
+            break;
+            case MAGIC_WAND:
+                i = "Magic Wand";
+            break;
+            case SPOON:
+                i = "Spoon";
+            break;
+            case SWORD:
+                i = "Sword";
+            break;
+            default:
+            throw new IllegalStateException("Not an item");
+        }
+        return i;
     }
 }
